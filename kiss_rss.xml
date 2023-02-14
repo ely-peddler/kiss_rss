@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+    <head>
+        <title>Feeds</title>
+    </head>
+    <body>
+        <outline text="BBC News" type="rss" xmlUrl="http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"/>
+        <outline text="Washington Post" type="rss" xmlUrl="https://feeds.washingtonpost.com/rss/world"/>
+    </body>
+</opml>
