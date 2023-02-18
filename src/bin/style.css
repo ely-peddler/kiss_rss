@@ -1,0 +1,107 @@
+
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+  } 
+  
+  .titlebar {
+    height: 30px;
+    background: #329ea3;
+    user-select: none;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .titlebar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+  }
+  .titlebar-button:hover {
+    background: #5bbec3;
+  }
+
+  .frame {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    padding: 3px;
+  }
+  
+  /* Light mode */
+  @media (prefers-color-scheme: light) {
+    body {
+        background-color: white;
+        color: black;
+    }
+
+  }
+  
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    body {
+        background-color: rgb(26, 24, 45);
+        color: rgb(240, 240, 240);
+    }
+  
+    a {
+      font-weight: 500;
+      color: #228192;
+      text-decoration: inherit;
+    }
+    
+    a:hover {
+      color: #5ec7da;
+    }
+  }
+  
+  .container {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .kiss_rss-news_item{
+    padding: 3px;
+    padding-top: 8px;
+    width: 100%;
+  }
+  
+  .kiss_rss-subscription {
+    float: left;
+    text-align: left;
+    font-size: smaller;
+  }
+  
+  .kiss_rss-timestamp {
+    float: right;
+    text-align: right;
+    font-size: small;
+  }
+  
+  .kiss_rss-title {
+    float: left;
+    text-align: left;
+    width: 100%;
+    padding-bottom: 5px;
+  }
+  
+  .kiss_rss-icon {
+    height: 10pt;
+    padding-right: 2pt;
+  }
+  
