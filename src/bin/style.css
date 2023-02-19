@@ -1,8 +1,14 @@
 /* Light mode */
 @media (prefers-color-scheme: light) {
   .container {
-      background-color: white;
-      color: black;
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .selected {
+    background-color: white !important;
+    color: black !important;
+    border-right-color: white !important;
   }
 
 }
@@ -10,9 +16,16 @@
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   .container {
-      background-color: rgb(26, 24, 45);
-      color: rgb(240, 240, 240);
+    background-color: rgb(26, 24, 45) !important;
+    color: rgb(240, 240, 240) !important;
   }
+
+  .selected {
+    background-color: rgb(26, 24, 45) !important;
+    color: rgb(240, 240, 240) !important;
+    border-right-color: rgb(26, 24, 45) !important;
+  }
+
 
   a {
     color: #228192;
@@ -34,7 +47,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  background: #393a3a;
+  background: rgb(39, 39, 39);
   color:rgb(146, 146, 146);
 
   padding: 0;
@@ -55,18 +68,15 @@
 } 
 
 .sidebar {
-  width: 30px;
+  width: 40px;
   user-select: none;
   position: fixed;
-  top: 5px;
-  left: 5px;
-  bottom: 5px;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
   font-size: 20px;
   display: flex;
   flex-direction: column;
-  /* background-image: url("../src/bin/icon.png");
-  background-size: 24px;
-  background-repeat: no-repeat; */
 }
 
 .sidebar .app-name {
@@ -76,6 +86,34 @@
   line-height: 12pt;
   font-size: 10pt;
 } 
+
+.sidebar nav {
+  margin-bottom: 10px;
+}
+
+.sidebar button {
+  width: 40px;
+  background-color: rgb(39, 39, 39);
+  color: inherit;
+  border: 0;
+  height: 40px;
+  margin-top: 5px;
+  font-size: 20px;
+}
+
+.sidebar button.active{
+  color: #4b4c4c;
+}
+
+.sidebar .tab-nav {
+  padding-right: 0;
+}
+
+.sidebar .tab-toggle {
+  border-left: 3px solid rgb(39, 39, 39);
+  border-right: 10px solid rgb(39, 39, 39);
+  padding-right: 0;
+}
 
 .sidebar ul {
   display: flex;
@@ -99,19 +137,6 @@
   color: #4b4c4c;
 }
 
-
-/* .sidebar .feeds {
-  margin-top: 60px;
-  width: 30px;
-  text-align: center;
-}
-
-.sidebar .actions {
-  margin-top: 60px;
-  width: 30px;
-  text-align: center;
-} */
-
 .sidebar ul.settings {
   position: fixed;
   bottom: 5px;
@@ -121,37 +146,10 @@
   margin: 0;
 }
 
-/* .sidebar .app-menu li {
-  margin-right: 10px;
-} */
-
-/* .sidebar .window-buttons {
-  justify-content: flex-end;
-  position:fixed;
-  right: 10px;
-} */
-
-/* .sidebar .window-buttons li {
-  margin-left: 10px;
-} */
-
-/* .sidebar img {
-  height: 20px;
-} */
-
-/* .sidebar-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-}
-.sidebar-button:hover {
-  background: #5bbec3;
-}   */
 .container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   overflow: auto;
   margin: 0;
   position: fixed;
@@ -167,22 +165,32 @@
   min-height: min-content;
 }
 
+.tab {
+  display: flex;
+  flex-direction: column;
+  display: none;
+}
+
 .kiss_rss-news_item{
+  min-height: fit-content;
   padding: 3px;
   padding-bottom: 8px;
   border-top:1px solid rgb(128, 128, 128);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .kiss_rss-subscription {
-  float: left;
   text-align: left;
   font-size: smaller;
+  width:50%;
 }
 
 .kiss_rss-timestamp {
-  float: right;
   text-align: right;
   font-size: small;
+  width:50%;
 }
 
 .kiss_rss-title {

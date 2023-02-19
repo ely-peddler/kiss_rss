@@ -4,22 +4,19 @@ const { invoke } = window.__TAURI__.tauri;
 
 async function refresh() {
   // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-  document
-    .querySelector("#refresh").className = "active";
-  document.querySelector("#items").innerHTML = await invoke("refresh");
-  document
-    .querySelector("#refresh").className = "passive";
+  let refresh_button = document.getElementById("button-refresh");
+  refresh_button.className = "active";
+  let content = document.getElementById("content");
+  content.innerHTML = await invoke("refresh");
+  refresh_button.className = "passive";
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   document
-    .querySelector("#refresh")
+    .getElementById("button-refresh")
     .addEventListener("click", () => refresh());
 });
 
 document.addEventListener('DOMContentLoaded', () => {
   refresh();
 })
-
-
-

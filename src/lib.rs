@@ -6,7 +6,7 @@ extern crate chrono; // 0.4.23
 use std::io::Read;
 use std::fs::File;
 
-#[derive(Ord, PartialOrd)]
+#[derive(Ord, PartialOrd, Clone)]
 pub struct NewsItem {
     pub subscription: String,
     pub title : String,

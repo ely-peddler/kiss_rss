@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
-    <script type="module" src="main.js" defer></script>
-    <style>
-      .logo.vanilla:hover {
-        filter: drop-shadow(0 0 2em #ffe21c);
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tauri App</title>
+  <script type="module" src="main.js" defer></script>
+  <style>
+    .logo.vanilla:hover {
+      filter: drop-shadow(0 0 2em #ffe21c);
+    }
+  </style>
+  <script>
+    function openTab(evt, tab_name) {
+      var i, x, tab_toggles;
+      x = document.getElementsByClassName("tab");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
       }
-    </style>
-  </head>
+      tab_toggles = document.getElementsByClassName("tab-toggle");
+      for (i = 0; i < x.length; i++) {
+        tab_toggles[i].className = tab_toggles[i].className.replace(" selected", "");
+      }
+      document.getElementById(tab_name).style.display = "block";
+      evt.currentTarget.className += " selected";
+    }
+  </script>
+</head>
 
 <body>
-    <div id="main">
-        <div class="sidebar">
-            <ul class="actions">
-                <li id="refresh">⟳</li>
-            </ul>
-            <ul class="feeds">
-                <li id="all">∀</li>
-            </ul>
-            <ul class="settings">
-                <li id="settings"></li>⛭</li>
-            </ul>
-        </div>
-        <div class="container">
-                <div id= "items" class="overflowing"></div>
-        </div>
+  <div id="main">
+    <div class="sidebar">
+      <nav class="actions">
+        <button id="button-refresh">⟳</button>
+      </nav>
+      <nav class="tab-nav">
+        <button class="tab-toggle" onclick="openTab(event, 'tab-feed-latest')">🗲</button>
+        <button class="tab-toggle" onclick="openTab(event, 'tab-feed-all')">∀</button>
+      </nav>
+      <ul class="settings">
+        <li id="settings"></li>⛭</li>
+      </ul>
     </div>
+    <div class="container">
+      <div class="overflowing">
+        <div id="content">
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
