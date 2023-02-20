@@ -13,7 +13,7 @@
     }
   </style>
   <script>
-    function openTab(evt, tab_name) {
+    function openTab(button, tab_name) {
       var i, tabs, tab_toggles;
       tabs = document.getElementsByClassName("tab");
       for (i = 0; i < tabs.length; i++) {
@@ -24,7 +24,7 @@
         tab_toggles[i].className = tab_toggles[i].className.replace(" selected", "");
       }
       document.getElementById(tab_name).className += " selected";
-      evt.currentTarget.className += " selected";
+      button.className += " selected";
     }
   </script>
 </head>
@@ -36,8 +36,8 @@
         <button id="button-refresh">⟳</button>
       </nav>
       <nav class="tab-nav">
-        <button class="tab-toggle" onclick="openTab(event, 'tab-feed-latest')">🗲</button>
-        <button class="tab-toggle" onclick="openTab(event, 'tab-feed-all')">∀</button>
+        <button class="tab-toggle" onclick="openTab(this, 'tab-feed-latest')">🗲</button>
+        <button class="tab-toggle" onclick="openTab(this, 'tab-feed-all')">∀</button>
       </nav>
       <ul class="settings">
         <li id="settings"></li>⛭</li>

@@ -6,11 +6,9 @@ async function refresh() {
   var i, ids;
   ids = [];
   let selected_items = document.getElementsByClassName("selected");
-  console.log("before");
   for (i = 0; i < selected_items.length; i++) {
     var id = selected_items[i].id;
     if(id.length > 0) {
-      console.log(id);
       ids.push(id);
     }
   }
@@ -19,10 +17,12 @@ async function refresh() {
   let content = document.getElementById("content");
   content.innerHTML = await invoke("refresh");
   refresh_button.className = "passive";
-  console.log("after");
-  for (i = 0; i < ids.length; i++) {
-    console.log(ids[i]);
-    document.getElementById(ids[i]).className += " selected";
+  if (ids.length > 0) {
+    for (i = 0; i < ids.length; i++) {
+      document.getElementById(ids[i]).className += " selected";
+    }
+  } else {
+    document.getElementsByClassName("tab-toggle")[0].onclick();
   }
 }
 
