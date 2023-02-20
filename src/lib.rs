@@ -12,17 +12,17 @@ pub struct NewsItem {
     pub title : String,
     pub url: String,
     pub timestamp: chrono::DateTime<chrono::Utc>,
-    pub description: String
+    pub summary: String
 }
 
 impl NewsItem {
-    fn new(subscription: &str, title: &str, url: &str, timestamp: &chrono::DateTime<chrono::Utc>, description: &str) -> NewsItem {
+    fn new(subscription: &str, title: &str, url: &str, timestamp: &chrono::DateTime<chrono::Utc>, summary: &str) -> NewsItem {
         NewsItem { 
             subscription: subscription.to_string(),
             title: title.to_string(), 
             url: url.to_string(), 
             timestamp: timestamp.to_owned(),
-            description: description.to_string()
+            summary: summary.to_string()
         }
     }
 }
@@ -66,16 +66,17 @@ impl Subscription {
         let is_rss = channel.has_tag_name("rss");
         let mut item_tag = "entry";
         let mut timestamp_tag = "updated";
+        let mut summary_tag  = "content";
         if is_rss {
             channel = channel.first_element_child().ok_or("rss element is missing channel element")?;
             item_tag = "item";
             timestamp_tag = "pubDate";
-        }
+            summary_tag = "description";        }
         for item_node in channel.children().filter(|x| x.has_tag_name(item_tag)) {
             let mut title = "";
             let mut url = "";
             let mut timestamp = chrono::DateTime::default();
-            let mut description = "";
+            let mut summary = "";
             for item_sub_node in item_node.children() {
                 if item_sub_node.has_tag_name("title") {
                     title = item_sub_node.text().unwrap_or("");
@@ -92,11 +93,11 @@ impl Subscription {
                     } else {
                         timestamp = chrono::DateTime::parse_from_rfc3339(timestamp_str).unwrap_or_default().with_timezone(&chrono::Utc);
                     }
-                } else if  item_sub_node.has_tag_name("description") {
-                    description = item_sub_node.text().unwrap_or("");
+                } else if  item_sub_node.has_tag_name(summary_tag) {
+                    summary = item_sub_node.text().unwrap_or("");
                 }
             }
-            let item = NewsItem::new(&self.name, title, url, &timestamp, description);
+            let item = NewsItem::new(&self.name, title, url, &timestamp, summary);
             items.push(item);
 
         }
