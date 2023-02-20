@@ -14,16 +14,16 @@
   </style>
   <script>
     function openTab(evt, tab_name) {
-      var i, x, tab_toggles;
-      x = document.getElementsByClassName("tab");
-      for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
+      var i, tabs, tab_toggles;
+      tabs = document.getElementsByClassName("tab");
+      for (i = 0; i < tabs.length; i++) {
+        tabs[i].className = tabs[i].className.replace(" selected", "");
       }
       tab_toggles = document.getElementsByClassName("tab-toggle");
-      for (i = 0; i < x.length; i++) {
+      for (i = 0; i < tab_toggles.length; i++) {
         tab_toggles[i].className = tab_toggles[i].className.replace(" selected", "");
       }
-      document.getElementById(tab_name).style.display = "block";
+      document.getElementById(tab_name).className += " selected";
       evt.currentTarget.className += " selected";
     }
   </script>
