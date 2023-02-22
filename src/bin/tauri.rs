@@ -3,8 +3,10 @@
     windows_subsystem = "windows"
 )]
 
-use kiss_rss::NewsItem;
-use scraper::{Html, Node::Text};
+use std::sync::{ Mutex };
+
+use kiss_rss::{ subscriptions::SubscriptionSet, news::NewsItemList };
+use scraper::{ Html, Node::Text };
 
 fn get_short_summary(html_summary: &str, len: usize) -> String {
     let mut summary = String::new();
@@ -22,39 +24,73 @@ fn get_short_summary(html_summary: &str, len: usize) -> String {
     summary
 }
 
-fn create_feed_tab(name: &str, items: &Vec<NewsItem>) -> String {
+fn create_feed_tab(name: &str, item_list: &NewsItemList) -> String {
     let mut html = format!("<div class=\"tab\" id=\"tab-feed-{}\">", name);
-    for item in items {
-        html += "<div class=\"kiss_rss-news_item\">";
-        html += &format!("<div class=\"kiss_rss-subscription\">{}</div>", item.subscription);
-        html += &format!("<div class=\"kiss_rss-timestamp\">{}</div>", item.timestamp);
-        html += &format!("<div class=\"kiss_rss-title\" onclick=openPage(\"{}\")>{}</div>", item.url, item.title);
-        html += &format!("<div class=\"kiss_rss-summary\">{}</div>", get_short_summary(&item.summary, 100));
+    for item in item_list {
+        html += "<div class=\"news_item\">";
+        html += &format!("<div class=\"subscription_name\">{}</div>", item.subscription);
+        html += &format!("<div class=\"timestamp\">{}</div>", item.timestamp);
+        html += &format!("<div class=\"title\" onclick=openPage(\"{}\")>{}</div>", item.url, item.title);
+        html += &format!("<div class=\"summary\">{}</div>", get_short_summary(&item.summary, 100));
         html += "</div>";
     }
     html += "</div>";
     html
 }
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn refresh() -> String {
-    let result = kiss_rss::refresh();
-    let inner_html = match result {
-        Ok(items) => {
-            let mut html = create_feed_tab("all", &items);
-            let mut latest = items.clone();
-            latest.truncate(20);
-            html += create_feed_tab("latest", &latest).as_str();
-            html },
-        Err(_) => { "<div class=\"kiss_rss-news_item\">Loading RSS failed</div>".to_string() }
-        };
-    inner_html
+fn update_sources_tab(state: tauri::State<LockedSubscriptionSet>) -> String {
+    let mutex_gd = state.0.lock().expect("bibble");
+    let subscription_set = mutex_gd.as_ref().unwrap();
+    let mut html = String::new();
+    html += "<div class=\"subscription header\">";
+    html += "<div class=\"name\">Name</div>";
+    html += "<div class=\"timestamp\">Last Sync Time</div>";
+    html += "<div class=\"update_rate\">Updates</div>";
+    html += "<div class=\"status\">Status</div>";
+    html += "</div>";
+    for subscription in subscription_set {
+        html += "<div class=\"subscription\">";
+        html += &format!("<div class=\"name\">{}</div>", subscription.name);
+        html += &format!("<div class=\"timestamp\">{}</div>", subscription.last_sync);
+        html += &format!("<div class=\"update_rate\">{:.0} / day</div>", subscription.update_rate*24.0);
+        html += &format!("<div class=\"status tooltip\">{}<span class=\"tooltiptext\">{}</span></div>", if subscription.status == "OK" { "✔" } else { "✖" }, subscription.status);
+        html += &format!("<div class=\"url\">{}</div>", subscription.url);
+        html += "</div>";
+    }
+    html += "</div>";
+    html
 }
+
+#[tauri::command]
+fn refresh(state: tauri::State<LockedSubscriptionSet>) -> String {
+    let mut mutex_gd = state.0.lock().expect("bibble");
+    let subscription_set = mutex_gd.as_mut().unwrap();
+    let latest_count = 40;
+    let item_list = subscription_set.sync();
+    let mut html = create_feed_tab("all", &item_list);
+    let mut latest = item_list.clone();
+    latest.truncate(latest_count);
+    html += create_feed_tab("latest", &latest).as_str();
+    html 
+}
+
+#[tauri::command]
+fn load(state: tauri::State<LockedSubscriptionSet>) {
+    let mut mutex_gd = state.0.lock().expect("bibble");
+    let subscription_set = mutex_gd.as_mut().unwrap();
+    subscription_set.load().expect("Failed to load subscription_set");
+}
+
+struct LockedSubscriptionSet(Mutex<Option<SubscriptionSet>>);
     
 fn main() {
+    let locked_subs = LockedSubscriptionSet(Mutex::new(Some(SubscriptionSet::new())));
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![refresh])
+        .manage(locked_subs)
+        .invoke_handler(tauri::generate_handler![load, refresh, update_sources_tab])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command

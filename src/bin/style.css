@@ -52,11 +52,11 @@
     border-right-color: var(--light-theme-bg) !important;
   }
 
-  .kiss_rss-subscription, .kiss_rss-timestamp {
+  .subscription_name, .timestamp {
     color: var(--sidebar-bg) !important;
   }
 
-  .kiss_rss-title {
+  .title {
     color: var(--light-theme-title)
   }
 
@@ -75,11 +75,11 @@
     border-right-color: var(--dark-theme-bg) !important;
   }
 
-  .kiss_rss-subscription, .kiss_rss-timestamp {
+  .subscription_name, .timestamp {
     color: var(--sidebar-fg) !important;
   }
 
-  .kiss_rss-title {
+  .title {
     color: var(--dark-theme-title)
   }
 
@@ -106,7 +106,14 @@
 } 
 
 .sidebar nav {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 10px;
+}
+
+.sidebar nav.settings {
+  position: fixed;
+  bottom: 2px;
 }
 
 .sidebar button {
@@ -154,14 +161,7 @@
   color: var(--sidebar-greyed);
 }
 
-.sidebar ul.settings {
-  position: fixed;
-  bottom: 5px;
-  left: 5px;
-  width: 30px;
-  text-align: center;
-  margin: 0;
-}
+
 
 .container {
   flex: 1;
@@ -190,37 +190,124 @@
   display: flex;
   flex-direction: column;
   display: none;
+  padding: 8px;
+  padding-top: 2px;
 }
 
-.kiss_rss-news_item{
+.news_item {
   min-height: fit-content;
-  padding: 8px;
-  padding-bottom: 12px;
+  padding-top: 2px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.kiss_rss-subscription {
+.news_item .subscription_name {
   text-align: left;
   font-size: x-small;
   width:50%;
 }
 
-.kiss_rss-timestamp {
+.news_item .timestamp {
   text-align: right;
   font-size: x-small;
   width:50%;
 }
 
-.kiss_rss-title {
+.news_item .title {
   text-align: left;
   width: 100%;
-  padding-bottom: 8px;
+  padding-bottom: 4px;
 }
 
-.kiss_rss-summary {
+.news_item .summary {
   text-align: left;
   font-size: small;
   width: 100%;
 }
+
+.subscription {
+  min-height: fit-content;
+  padding-top: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: smaller;
+}
+
+.subscription.header {
+  border-bottom: var(--sidebar-bg) solid 2px;
+}
+
+.subscription.name {
+  width:35%;
+}
+
+.subscription.timestamp {
+  width:35%;
+}
+
+.subscription.status {
+  width:5%;
+  text-align: right;
+  padding-right: 5px;
+  font-size: larger;
+}
+
+.subscription.update_rate {
+  width:10%;
+  text-align: right;
+}
+
+.subscription.url {
+  width:100%;
+  text-align: right;
+}
+
+ /* Tooltip container */
+ .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  
+  visibility: hidden;
+  width: fit-content;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 0 5px;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: 20%;
+  margin-right: 0px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 30%;
+  left: 100%;
+  margin-right: -2px;
+  border-width: 4px;
+  border-style: solid;
+  border-color:transparent transparent transparent #555  ;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+} 

@@ -39,13 +39,21 @@
         <button class="tab-toggle" onclick="openTab(this, 'tab-feed-latest')">🗲</button>
         <button class="tab-toggle" onclick="openTab(this, 'tab-feed-all')">∀</button>
       </nav>
-      <ul class="settings">
+      <nav class="tab-nav settings">
+        <button class="tab-toggle" onclick="openTab(this, 'tab-sources')">🛈</button>
+        <button class="tab-toggle" onclick="openTab(this, 'tab-settings')">⛭</button>
+      </nav>
+      <!-- <ul class="settings">
         <li id="settings"></li>⛭</li>
-      </ul>
+      </ul> -->
     </div>
     <div class="container">
       <div class="overflowing">
-        <div id="content">
+        <div id="feeds">
+        </div>
+        <div id="settings">
+          <div class=" tab"id="tab-sources">Sources</div>
+          <div class=" tab"id="tab-settings">Settings</div>
         </div>
       </div>
     </div>

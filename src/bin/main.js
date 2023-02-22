@@ -2,6 +2,15 @@ const { invoke } = window.__TAURI__.tauri;
 
 //let items_element;
 
+async function update_sources_tab() {
+  document.getElementById("tab-sources").innerHTML = await invoke("update_sources_tab");
+}
+
+async function load() {
+  await invoke("load")
+  update_sources_tab();
+}
+
 async function refresh() {
   var i, ids;
   ids = [];
@@ -14,8 +23,8 @@ async function refresh() {
   }
   let refresh_button = document.getElementById("button-refresh");
   refresh_button.className = "active";
-  let content = document.getElementById("content");
-  content.innerHTML = await invoke("refresh");
+  let feeds = document.getElementById("feeds");
+  feeds.innerHTML = await invoke("refresh");
   refresh_button.className = "passive";
   if (ids.length > 0) {
     for (i = 0; i < ids.length; i++) {
@@ -24,6 +33,7 @@ async function refresh() {
   } else {
     document.getElementsByClassName("tab-toggle")[0].onclick();
   }
+  update_sources_tab();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -33,5 +43,6 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  load();
   refresh();
 })
