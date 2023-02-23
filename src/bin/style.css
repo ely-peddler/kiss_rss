@@ -117,6 +117,7 @@
 }
 
 .sidebar button {
+  border-radius: 15px 0 0 15px;
   width: 40px;
   background-color: var(--sidebar-bg);
   color: inherit;
