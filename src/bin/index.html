@@ -5,14 +5,14 @@
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="style.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tauri App</title>
+  <title>Kiss RSS</title>
   <script type="module" src="main.js" defer></script>
   <style>
     .logo.vanilla:hover {
       filter: drop-shadow(0 0 2em #ffe21c);
     }
   </style>
-  <script>
+  <!-- <script>
     function openTab(button, tab_name) {
       var i, tabs, tab_toggles;
       tabs = document.getElementsByClassName("tab");
@@ -26,22 +26,22 @@
       document.getElementById(tab_name).className += " selected";
       button.className += " selected";
     }
-  </script>
+  </script> -->
 </head>
 
 <body>
   <div id="main">
     <div class="sidebar">
       <nav class="actions">
-        <button id="button-refresh">⟳</button>
+        <button id="refresh-feeds">⟳</button>
       </nav>
       <nav class="tab-nav">
-        <button class="tab-toggle" onclick="openTab(this, 'tab-feed-latest')">🗲</button>
-        <button class="tab-toggle" onclick="openTab(this, 'tab-feed-all')">∀</button>
+        <button class="tab-toggle" id='feed-latest'>🗲</button>
+        <button class="tab-toggle" id='feed-all'>∀</button>
       </nav>
       <nav class="tab-nav settings">
-        <button class="tab-toggle" onclick="openTab(this, 'tab-sources')">🛈</button>
-        <button class="tab-toggle" onclick="openTab(this, 'tab-settings')">⛭</button>
+        <button class="tab-toggle" id='subscriptions'>🛈</button>
+        <button class="tab-toggle" id="settings">⛭</button>
       </nav>
       <!-- <ul class="settings">
         <li id="settings"></li>⛭</li>
@@ -52,8 +52,15 @@
         <div id="feeds">
         </div>
         <div id="settings">
-          <div class=" tab"id="tab-sources">Sources</div>
-          <div class=" tab"id="tab-settings">Settings</div>
+          <div class="tab" id="tab-subscriptions">
+            <div>Current Sources</div>
+            <div id="current-subscriptions"></div>
+            <div>Add A Source</div>
+            <div>Name: <input id="new-subscription-name" type="text"></div>
+            <div>Url: <input id="new-subscription-url" type="text"></div>
+            <button id="add-subscription">Add</button>
+          </div>
+          <div class="tab" id="tab-settings">Settings</div>
         </div>
       </div>
     </div>

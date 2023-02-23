@@ -141,11 +141,15 @@ impl SubscriptionSet {
         for outline in outlines {
             let name =  outline.attribute("text").unwrap_or("");
             let url = outline.attribute("xmlUrl").unwrap_or("");
-            if name != "" && url != "" {
-                self.subscriptions.push(Subscription::new( name, url));
-            }
+            self.add(name, url);
         }
         Ok(())
+    }
+
+    pub fn add(&mut self, name: &str, url: &str) {
+        if name != "" && url != "" {
+            self.subscriptions.push(Subscription::new(name, url));
+        }
     }
 
     pub fn sync(&mut self) -> NewsItemList {
