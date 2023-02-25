@@ -114,9 +114,9 @@ fn get_subscriptions_table(state: tauri::State<LockedSubscriptionSet>) -> String
     let mutex_gd = state.0.lock().unwrap();
     let subscription_set = mutex_gd.as_ref().unwrap();
     let mut html = String::new();
-    html += "<div class=\"subscription header\">";
+    html += "<div class=\"subscription\">";
     html += "<div class=\"name\">Name</div>";
-    html += "<div class=\"timestamp\">Last Sync Time</div>";
+    html += "<div class=\"timestamp\">Last Sync</div>";
     html += "<div class=\"update_rate\">Updates</div>";
     html += "<div class=\"status\">OK</div>";
     html += "</div>";
@@ -126,7 +126,7 @@ fn get_subscriptions_table(state: tauri::State<LockedSubscriptionSet>) -> String
         html += &format!("<div class=\"timestamp\">{}</div>", subscription.last_sync);
         html += &format!("<div class=\"update_rate\">{:.0} / day</div>", subscription.update_rate*24.0);
         html += &format!("<div class=\"status\">{}</div>", subscription.status);
-        html += &format!("<div class=\"url\">{}</div>", subscription.url);
+        // html += &format!("<div class=\"url\">{}</div>", subscription.url);
         html += "</div>";
     }
     html += "</div>";
