@@ -7,60 +7,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kiss RSS</title>
   <script type="module" src="main.js" defer></script>
-  <style>
-    .logo.vanilla:hover {
-      filter: drop-shadow(0 0 2em #ffe21c);
-    }
-  </style>
-  <!-- <script>
-    function openTab(button, tab_name) {
-      var i, tabs, tab_toggles;
-      tabs = document.getElementsByClassName("tab");
-      for (i = 0; i < tabs.length; i++) {
-        tabs[i].className = tabs[i].className.replace(" selected", "");
-      }
-      tab_toggles = document.getElementsByClassName("tab-toggle");
-      for (i = 0; i < tab_toggles.length; i++) {
-        tab_toggles[i].className = tab_toggles[i].className.replace(" selected", "");
-      }
-      document.getElementById(tab_name).className += " selected";
-      button.className += " selected";
-    }
-  </script> -->
 </head>
 
 <body>
   <div id="main">
     <div class="sidebar">
-      <nav class="actions">
+      <!-- <nav class="actions">
         <button id="refresh-feeds">⟳</button>
+      </nav> -->
+      <nav class="tab_nav">
+        <button id="sync_all">⟳</button>
       </nav>
-      <nav class="tab-nav">
-        <button class="tab-toggle" id='feed-latest'>🗲</button>
-        <button class="tab-toggle" id='feed-all'>∀</button>
+      <nav class="tab_nav">
+        <button class="tab_toggle" id='items_toggle' value="items">🗲</button>
+        <button class="tab_toggle" id='bookmarks_toggle' value="bookmarks">☆</button>
       </nav>
-      <nav class="tab-nav settings">
-        <button class="tab-toggle" id='subscriptions'>🛈</button>
-        <button class="tab-toggle" id="settings">⛭</button>
+      <nav class="tab_nav settings">
+        <button class="tab_toggle" id='subscriptions_toggle' value="subscriptions">🛈</button>
+        <button class="tab_toggle" id="settings_toggle" value="settings">⛭</button>
       </nav>
-      <!-- <ul class="settings">
-        <li id="settings"></li>⛭</li>
-      </ul> -->
     </div>
-    <div class="container">
-      <div class="overflowing">
-        <div id="feeds">
+    <div class="tab" id="items_tab">
+      <!-- <div class="header">
+        <div class="name">News</div><button id="sync_all">⟳</button>
+      </div> -->
+      <div class="content">
+        <div class="overflowing">
+          <div id="items"></div>
         </div>
-        <div id="settings">
-          <div class="tab" id="tab-subscriptions">
-            <div>Current Sources</div>
-            <div id="current-subscriptions"></div>
-            <div>Add A Source</div>
-            <div>Name: <input id="new-subscription-name" type="text"></div>
-            <div>Url: <input id="new-subscription-url" type="text"></div>
-            <button id="add-subscription">Add</button>
-          </div>
-          <div class="tab" id="tab-settings">Settings</div>
+      </div>
+    </div>
+    <div class="tab" id="bookmarks_tab">
+      <!-- <div class="header">
+        <div class="name">Bookmarks</div>
+      </div> -->
+      <div class="content">
+        <div class="overflowing">
+          <div id="bookmarks"></div>
+        </div>
+      </div>
+    </div>
+    <div class="tab" id="subscriptions_tab">
+      <!-- <div class="header">
+        <div class="name">Subscriptions</div>
+      </div> -->
+      <div class="content">
+        <div class="overflowing">
+          <div id="subscriptions"></div>
+        </div>
+        <div id="add_subscription_form">
+          <div>Add From Feed Url</div>
+          <input id="new_subscription_url" type="text" placeholder="http://example.com/rss.xml">
+          <button id="add_subscription">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="tab" id="settings_tab">
+      <!-- <div class="header">
+        <div class="name">Settings</div>
+      </div> -->
+      <div class="content">
+        <div class="overflowing">
+          <div id="settings"></div>
         </div>
       </div>
     </div>

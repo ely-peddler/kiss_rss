@@ -2,12 +2,18 @@
   --sidebar-bg: rgb(65, 65, 65);
   --sidebar-fg: rgb(146, 146, 146);
   --sidebar-greyed: rgb(100, 100, 100);
-  --light-theme-bg: white;
-  --light-theme-fg: black;
+  --sidebar-hilite: rgb(240, 239, 239);
+  --light-theme-bg: rgb(232, 228, 228);
+  --light-theme-fg: rgb(58, 58, 58);
+  --light-theme-fg-hilite: black;
   --light-theme-title: darkblue;
   --dark-theme-bg:rgb(26, 24, 45);
   --dark-theme-fg:rgb(200, 200, 200);
+  --dark-theme-fg-hilite:white;
   --dark-theme-title: blanchedalmond;
+
+  --radius: 6px;
+  --margin: 6px;
 
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -41,18 +47,27 @@
 
 /* Light mode */
 @media (prefers-color-scheme: light) {
-  .container {
+  .content {
     background-color: var(--light-theme-bg) !important;
     color: var(--light-theme-fg) !important;
+    border: solid 4px var(--light-theme-bg);
   }
 
-  .selected {
-    background-color: var(--light-theme-bg) !important;
-    color: var(--light-theme-fg) !important;
-    border-right-color: var(--light-theme-bg) !important;
+  ::-webkit-scrollbar {
+    border-color: var(--light-theme-bg) !important;
   }
 
-  .subscription_name, .timestamp {
+  ::-webkit-scrollbar-track {
+    background: var(--light-theme-bg);
+  }
+
+  /* .selected {
+    /* background-color: var(--light-theme-bg) !important; 
+    color: var(--sidebar-hilite) !important;
+    border-left-color: var(--sidebar-hilite) !important;
+  } */
+
+  .news_itms.subscription_name, .news_itms.timestamp {
     color: var(--sidebar-bg) !important;
   }
 
@@ -64,18 +79,27 @@
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  .container {
+  .content {
     background-color: var(--dark-theme-bg) !important;
     color: var(--dark-theme-fg) !important;
+    border: solid 3px var(--dark-theme-bg);
   }
 
-  .selected {
-    background-color: var(--dark-theme-bg) !important;
-    color: var(--dark-theme-fg) !important;
-    border-right-color: var(--dark-theme-bg) !important;
+  ::-webkit-scrollbar {
+    border-color: var(--dark-theme-bg) !important;
   }
 
-  .subscription_name, .timestamp {
+  ::-webkit-scrollbar-track {
+    background: var(--dark-theme-bg);
+  }
+
+  /* .selected {
+    /* background-color: var(--dark-theme-bg) !important; 
+    color: var(--sidebar-hilite) !important;
+    border-left-color: var(--sidebar-hilite) !important;
+  } */
+
+  .news_itms.subscription_name, .news_itms.timestamp {
     color: var(--sidebar-fg) !important;
   }
 
@@ -83,6 +107,13 @@
     color: var(--dark-theme-title)
   }
 
+}
+
+button {
+  border: 0;
+  font-size: 20px;
+  background-color: inherit;
+  color: inherit;
 }
 
 .sidebar {
@@ -117,31 +148,36 @@
 }
 
 .sidebar button {
-  border-radius: 15px 0 0 15px;
+  /* border-radius: 15px 0 0 15px; */
+  height: 20px;
   width: 40px;
+  margin: 10px 0;
   background-color: var(--sidebar-bg);
-  color: inherit;
-  border: 0;
-  height: 40px;
-  margin-top: 5px;
-  font-size: 20px;
+  margin-top: var(--margin);
+}
+
+.sidebar button.selected {
+  color: var(--sidebar-hilite) !important;
+  border-left-color: var(--sidebar-hilite) !important;
 }
 
 .sidebar button.active{
   color: #4b4c4c;
 }
 
-.sidebar .tab-nav {
+.sidebar .tab_nav {
+  margin-top: var(--margin);
   padding-right: 0;
 }
 
-.sidebar .tab-toggle {
-  border-left: 3px solid var(--sidebar-bg);
-  border-right: 10px solid var(--sidebar-bg);
-  padding-right: 0;
+.sidebar .tab_toggle {
+  border-left: 2px solid var(--sidebar-bg);
+  /* border-right: 10px solid var(--sidebar-bg);
+  padding-right: 0; */
+  height: min-content;
 }
 
-.sidebar ul {
+/* .sidebar ul {
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -160,39 +196,72 @@
 
 .sidebar li.active{
   color: var(--sidebar-greyed);
-}
-
-
-
-.container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  margin: 0;
-  position: fixed;
-  top: 1px;
-  left: 40px;
-  right: 1px;
-  bottom: 1px;
-}
-
-.overflowing {
-  display: flex;
-  flex-direction: column;
-  min-height: min-content;
-}
+} */
 
 .tab.selected {
   display: block;
 }
 
 .tab {
+  flex: 1;
   display: flex;
   flex-direction: column;
   display: none;
-  padding: 8px;
-  padding-top: 2px;
+  border-radius: var(--radius);
+  /* padding: 8px;
+  padding-top: 2px; */
+  position: absolute;
+  left: 40px;
+  right: var(--margin);
+  top: var(--margin);
+  bottom: var(--margin);
+  /* border: solid 1px yellow; */
+  padding: 10px;
+  /* position: fixed;
+  top: 40px;
+  left: 40px;
+  right: 1px;
+  bottom: 1px; */
+}
+
+.tab .header {
+  display: flex;
+  flex-direction: row;
+  /* border: solid 1px red; */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 25px;
+  padding: 0 var(--margin);
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-fg);
+}
+
+.tab .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 6px;
+  border-radius: var(--radius);
+  /* border: solid 1px blue; */
+    /* margin: 0;
+  top: 40px;
+  left: 40px;
+  right: 1px;
+  bottom: 1px; */
+}
+
+.overflowing {
+  display: flex;
+  flex-direction: column;
+  min-height: min-content;
 }
 
 .news_item {
@@ -228,11 +297,11 @@
 }
 
 .subscription {
+  width: 100%;
   min-height: fit-content;
   padding-top: 2px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: row;
   font-size: smaller;
 }
 
@@ -241,74 +310,81 @@
 }
 
 .subscription.name {
-  width:35%;
+  flex: 1
 }
 
 .subscription.timestamp {
-  width:35%;
-}
-
-.subscription.status {
-  width:5%;
-  text-align: right;
-  padding-right: 5px;
-  font-size: larger;
+  position: absolute;
+  right: 100px;
 }
 
 .subscription.update_rate {
-  width:10%;
+  position: absolute;
+  right: 60px;
+}
+
+.subscription.status {
+  position: absolute;
+  right: 10px;
+  width:10px;
   text-align: right;
+  padding-right: var(--margin);
+  font-size: larger;
 }
 
 .subscription.url {
   width:100%;
-  text-align: right;
+  text-align: left;
 }
 
- /* Tooltip container */
- .tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+#add_subscription_form {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top: var(--sidebar-bg) solid 2px;
+  margin-top: 2px;
 }
 
-/* Tooltip text */
-.tooltip .tooltiptext {
-  
-  visibility: hidden;
-  width: fit-content;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 0 5px;
-  border-radius: 6px;
-
-  /* Position the tooltip text */
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
-  right: 20%;
-  margin-right: 0px;
-
-  /* Fade in tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
+#add_subscription_form input {
+  flex: 1;
+  height: fit-content;
+  color: inherit;
+  background-color: inherit;;
+  border: 0;
+  margin: var(--margin);
+  padding: 2px;
+}
+#add_subscription_form button {
+  padding: 0;
+  margin: var(--margin) var(--margin) var(--margin) 0;
 }
 
-/* Tooltip arrow */
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  bottom: 30%;
-  left: 100%;
-  margin-right: -2px;
-  border-width: 4px;
-  border-style: solid;
-  border-color:transparent transparent transparent #555  ;
+
+/* ---- scrollbar --- */
+ /* width */
+ ::-webkit-scrollbar {
+  width: 12px;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+::-webkit-scrollbar-corner {
+  background: var(--sidebar-bg)
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  /* border-radius: var(--radius); */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--sidebar-fg);
+  border-radius: 3px;
+  /* border-radius: var(--radius); */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sidebar-hilite);
 } 
