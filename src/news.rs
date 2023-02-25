@@ -28,7 +28,7 @@ impl Eq for NewsItem {}
 
 #[derive(Clone)]
 pub struct NewsItemList {
-    items: Vec<NewsItem>
+    pub items: Vec<NewsItem>
 }
 
 impl NewsItemList {
@@ -44,8 +44,8 @@ impl NewsItemList {
         self.items.push(item);
     }
 
-    pub fn extend(&mut self, other: NewsItemList) {
-        self.items.extend(other.items);
+    pub fn extend(&mut self, other: &NewsItemList) {
+        self.items.extend(other.items.to_owned());
     }
 
     pub fn normalise(&mut self) {

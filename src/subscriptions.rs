@@ -1,51 +1,97 @@
-use std::io::Read;
+use std::{io::Read};
 use std::fs::File;
+use std::fmt;
 
-use chrono::SubsecRound;
+use chrono::{SubsecRound};
 
 use crate::news::{ NewsItem, NewsItemList };
+
+#[derive(Clone, Debug, Default)]
+pub enum Status {
+    #[default]
+    Unknown,
+    Ok,
+    DownloadFailed(String),
+    ParseFailed(String)
+}
+
+impl Status {
+    pub fn get_message(&self) -> String {
+        match self {
+            Status::Unknown => "".to_string(),
+            Status::Ok => "".to_string(),
+            Status::DownloadFailed(s) => s.to_string(),
+            Status::ParseFailed(s) => s.to_string()
+        }
+    }
+}
+
+impl fmt::Display for Status {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Status::Unknown => write!(f, "?"),
+            Status::Ok => write!(f, "✓"),
+            Status::DownloadFailed(_) => write!(f, "✕"),
+            Status::ParseFailed(_) => write!(f, "✕")
+        }
+    }
+}
 
 #[derive(Clone)]
 pub struct Subscription {
     pub name : String,
     pub url: String,
-    pub status: String,
+    pub status: Status,
     pub last_sync: chrono::DateTime<chrono::Utc>,
-    pub update_rate: f32
+    pub update_rate: f32,
+    pub item_list: NewsItemList
 }
 
 impl Subscription {
-    fn new(name: &str, url: &str) -> Subscription {
-        Subscription {
-            name: name.to_string(),
-            url: url.to_string(),
-            status: "Unknown".to_string(),
-            last_sync: chrono::DateTime::default(),
-            update_rate: 0.0
+    pub fn from_url(url: &str) -> Option<Subscription> {
+        if url.len() > 0 {
+            Some(
+                Subscription {
+                    name: "".to_string(),
+                    url: url.to_string(),
+                    status: Status::default(),
+                    last_sync: chrono::DateTime::default(),
+                    update_rate: 0.0,
+                    item_list: NewsItemList::new()
+                }
+            )
+        } else { None }
+    }
+
+    // pub fn name(&self) -> String { self.name.to_owned() }
+    // pub fn url(&self) -> String { self.url.to_owned() }
+    // pub fn status(&self) -> String { self.status.to_string() }
+    // pub fn status_message(&self) -> String { self.status.get_message() }
+    // pub fn last_sync(&self) -> chrono::DateTime<chrono::Utc> { self.last_sync }
+    // pub fn update_rate(&self) -> f32 { self.update_rate }
+    // pub fn items(&self) -> NewsItemList { self.item_list.clone() }
+
+    pub fn set_name(&mut self, name: &str) {
+        if name.len() > 0 {
+            self.name = name.to_owned();
         }
     }
-    pub fn sync(&mut self) -> NewsItemList {
-        let ret = NewsItemList::new();
-        let rss = match self.download() {
-            Ok(downloaded) => downloaded,
-            Err(_) => {
-                self.status = "Download failed".to_string();
-                return ret;
+
+    pub fn sync(&mut self) {
+        self.item_list = NewsItemList::new();
+        match self.download() {
+            Ok(downloaded) => {
+                match self.parse(&downloaded) {
+                    Ok(parsed) => {
+                        self.status = Status::Ok;
+                        self.last_sync = chrono::offset::Utc::now().round_subsecs(0);
+                        self.item_list = parsed;
+                    }
+                    Err(e) => self.status = Status::ParseFailed(e.to_string())
+                }
             }
+            Err(e) => self.status = Status::DownloadFailed(e.to_string())
         };
-        match self.parse(&rss) {
-            Ok(parsed) => {
-                self.status = "OK".to_string();
-                self.last_sync = chrono::offset::Utc::now().round_subsecs(0);
-                parsed
-            },
-            Err(_) => {
-                self.status = "Parse failed".to_string();
-                ret
-            }
-        }
-        //return ret;
-        
     }
 
     fn download(&self) -> Result<String, Box<(dyn std::error::Error)>> {
@@ -60,6 +106,7 @@ impl Subscription {
         let doc = roxmltree::Document::parse(rss)?;
         let mut channel = doc.root().first_element_child().ok_or("xml doc is missing child elements")?;
         let is_rss = channel.has_tag_name("rss");
+        let name_tag = "title";
         let mut item_tag = "entry";
         let mut timestamp_tag = "updated";
         let mut summary_tag  = "content";
@@ -67,7 +114,15 @@ impl Subscription {
             channel = channel.first_element_child().ok_or("rss element is missing channel element")?;
             item_tag = "item";
             timestamp_tag = "pubDate";
-            summary_tag = "description";        }
+            summary_tag = "description";        
+        }
+        if self.name.len() == 0 {
+            let name = match channel.children().find(|x| x.has_tag_name(name_tag)) {
+                Some(node) => node.text().unwrap_or(""),
+                None => ""
+            };
+            self.set_name(name)
+        }
         for item_node in channel.children().filter(|x| x.has_tag_name(item_tag)) {
             let mut title = "";
             let mut url = "";
@@ -139,23 +194,46 @@ impl SubscriptionSet {
         let outlines = opml.descendants().filter(|x| x.has_tag_name("outline"));
         self.subscriptions = Vec::new();
         for outline in outlines {
-            let name =  outline.attribute("text").unwrap_or("");
-            let url = outline.attribute("xmlUrl").unwrap_or("");
-            self.add(name, url);
+            if let Some(url) = outline.attribute("xmlUrl") {
+                if url.len() > 0 {
+                    if let Some(subscription) = &mut Subscription::from_url(url) {
+                        subscription.set_name(outline.attribute("text").unwrap_or(""));
+                        self.add(subscription);
+                    }
+                }
+            }
         }
         Ok(())
     }
 
-    pub fn add(&mut self, name: &str, url: &str) {
-        if name != "" && url != "" {
-            self.subscriptions.push(Subscription::new(name, url));
+    pub fn add(&mut self, subscrition: &Subscription) {
+        self.subscriptions.push(subscrition.to_owned());
+    }
+
+    pub fn add_from_url(&mut self, url: &str) {
+        if let Some(subscription) = &Subscription::from_url(url) {
+            self.add(subscription);
         }
     }
 
-    pub fn sync(&mut self) -> NewsItemList {
-        let mut item_list = NewsItemList::new();
+    pub fn sync_all(&mut self) {
         for subscription in &mut self.subscriptions {
-            item_list.extend(subscription.sync());
+            subscription.sync();
+        }
+    }
+
+    pub fn sync(&mut self, url: &str)  {
+        for subscription in &mut self.subscriptions {
+            if subscription.url == url {
+                subscription.sync();
+            }
+        }
+    }
+
+    pub fn get_items(&self) -> NewsItemList {
+        let mut item_list = NewsItemList::new();
+        for subscription in &self.subscriptions {
+            item_list.extend(&subscription.item_list);
         }
         item_list.normalise();
         item_list
