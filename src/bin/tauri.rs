@@ -114,7 +114,7 @@ fn get_subscriptions_table(state: tauri::State<LockedSubscriptionSet>) -> String
     let mutex_gd = state.0.lock().unwrap();
     let subscription_set = mutex_gd.as_ref().unwrap();
     let mut html = String::new();
-    html += "<div class=\"subscription\">";
+    html += "<div class=\"subscription header\">";
     html += "<div class=\"name\">Name</div>";
     html += "<div class=\"timestamp\">Last Sync</div>";
     html += "<div class=\"update_rate\">Updates</div>";

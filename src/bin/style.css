@@ -224,10 +224,10 @@ button {
   bottom: 1px; */
 }
 
-.tab .header {
+/* .tab .header {
   display: flex;
   flex-direction: row;
-  /* border: solid 1px red; */
+  /* border: solid 1px red; 
   position: absolute;
   left: 0;
   right: 0;
@@ -236,7 +236,7 @@ button {
   padding: 0 var(--margin);
   background-color: var(--sidebar-bg);
   color: var(--sidebar-fg);
-}
+} */
 
 .tab .content {
   flex: 1;
@@ -305,9 +305,9 @@ button {
   font-size: smaller;
 }
 
-/* .subscription.header {
+.subscription.header {
   border-bottom: var(--sidebar-bg) solid 2px;
-} */
+}
 
 .subscription .name {
   flex: 1
@@ -327,11 +327,9 @@ button {
 
 .subscription .status {
   position: absolute;
-  right: 2px;
+  right: 4px;
   width: 25px;
-  text-align: right;
-  padding-right: var(--margin);
-  font-size: larger;
+  text-align: center;
 }
 
 .subscription .url {
@@ -352,21 +350,24 @@ button {
   flex: 1;
   height: fit-content;
   color: inherit;
-  background-color: inherit;;
+  background-color: inherit;
   border: 0;
   margin: var(--margin);
+  /* margin-right: 30px; */
   padding: 2px;
 }
 #add_subscription_form button {
   padding: 0;
-  margin: var(--margin) var(--margin) var(--margin) 0;
-}
+  width: 22px;
+  text-align: center;
+  margin: var(--margin) 0;
+} 
 
 
 /* ---- scrollbar --- */
  /* width */
  ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-corner {
