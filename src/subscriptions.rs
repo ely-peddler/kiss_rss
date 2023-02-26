@@ -1,8 +1,9 @@
 use std::{io::Read};
-use std::fs::File;
+use std::fs::OpenOptions;
 use std::fmt;
 
 use chrono::{SubsecRound};
+use xml_builder::{XMLBuilder, XMLElement, XMLVersion};
 
 use crate::news::{ NewsItem, NewsItemList };
 
@@ -187,7 +188,7 @@ impl SubscriptionSet {
     pub fn load(&mut self) -> Result<(), Box<(dyn std::error::Error)>> {
         let mut opml_file_path = dirs::data_local_dir().ok_or("Unable to find local used dir")?;
         opml_file_path = opml_file_path.join(&self.opml_file_name);
-        let mut opml_file = File::open(opml_file_path)?;
+        let mut opml_file = OpenOptions::new().read(true).open(opml_file_path)?;
         let mut opml_text = String::new();
         opml_file.read_to_string(&mut opml_text)?;
         let opml = roxmltree::Document::parse(opml_text.as_str())?;
@@ -203,6 +204,42 @@ impl SubscriptionSet {
                 }
             }
         }
+        Ok(())
+    }
+
+    pub fn save(&self) -> Result<(), Box<(dyn std::error::Error)>> {
+        let mut xml = XMLBuilder::new()
+        .version(XMLVersion::XML1_1)
+        .encoding("UTF-8".into())
+        .build();
+
+        let mut opml = XMLElement::new("opml");
+        opml.add_attribute("version", "1.0");
+        let mut head = XMLElement::new("head");
+        let mut title = XMLElement::new("title");
+        title.add_text("Kiss RSS".to_string()).unwrap();
+        head.add_child(title).unwrap();
+        opml.add_child(head).unwrap();
+        let mut body = XMLElement::new("body");
+        for subscription in &self.subscriptions {
+            let mut outline = XMLElement::new("outline");
+            outline.add_attribute("text", subscription.name.as_str());
+            outline.add_attribute("type", "rss");
+            outline.add_attribute("xmlUrl", subscription.url.as_str());
+            body.add_child(outline).unwrap();
+        }
+        opml.add_child(body).unwrap();
+        xml.set_root_element(opml);
+
+        // let mut writer: Vec<u8> = Vec::new();
+        // xml.generate(&mut writer).unwrap();
+        // let xml_str = String::from_utf8(writer).unwrap();
+        // println!("{}",xml_str);
+
+        let mut opml_file_path = dirs::data_local_dir().ok_or("Unable to find local used dir")?;
+        opml_file_path = opml_file_path.join(&self.opml_file_name);
+        let opml_file = OpenOptions::new().write(true).truncate(true).open(opml_file_path)?;
+        xml.generate(opml_file).unwrap();
         Ok(())
     }
 

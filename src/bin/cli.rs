@@ -15,5 +15,6 @@ fn main() {
     for subscription in &subscriptions {
         println!("{} {}\t{}\t{}\t{}\t{}", subscription.status, subscription.update_rate, subscription.last_sync, subscription.update_rate, subscription.name, subscription.url);
     }
+    subscriptions.save().expect("Unable to save subscriptions."); 
 
 }

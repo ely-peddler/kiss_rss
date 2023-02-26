@@ -2066,6 +2066,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "url 2.3.1",
+ "xml-builder",
 ]
 
 [[package]]
@@ -5017,6 +5018,12 @@ checksum = "6d1526bbe5aaeb5eb06885f4d987bcdfa5e23187055de9b83fe00156a821fabc"
 dependencies = [
  "libc",
 ]
+
+[[package]]
+name = "xml-builder"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ccb75a3f8ef413a4fb3eb7203031bc6707c220f110e18983134866fd44ce02b3"
 
 [[package]]
 name = "xmlparser"
