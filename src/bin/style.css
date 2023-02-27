@@ -1,19 +1,19 @@
 :root {
-  --sidebar-bg: rgb(65, 65, 65);
-  --sidebar-fg: rgb(146, 146, 146);
-  --sidebar-greyed: rgb(100, 100, 100);
+  --sidebar-bg: rgb(61 61 61);
+  --sidebar-fg: rgb(213 206 206);
+  --sidebar-greyed: rgb(227 212 212);
   --sidebar-hilite: rgb(240, 239, 239);
   --light-theme-bg: rgb(232, 228, 228);
   --light-theme-fg: rgb(58, 58, 58);
   --light-theme-fg-hilite: black;
   --light-theme-title: darkblue;
-  --dark-theme-bg:rgb(26, 24, 45);
-  --dark-theme-fg:rgb(200, 200, 200);
+  --dark-theme-bg:rgb(27 27 27);
+  --dark-theme-fg:rgb(189 189 189);
   --dark-theme-fg-hilite:white;
-  --dark-theme-title: blanchedalmond;
+  --dark-theme-title: #f0f0f0;
 
-  --radius: 6px;
-  --margin: 6px;
+  --radius: 0; /*6px;*/
+  --margin: 1px;
 
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -50,7 +50,7 @@
   .content {
     background-color: var(--light-theme-bg) !important;
     color: var(--light-theme-fg) !important;
-    border: solid 4px var(--light-theme-bg);
+    border: solid 2px var(--light-theme-bg);
   }
 
   ::-webkit-scrollbar {
@@ -82,7 +82,7 @@
   .content {
     background-color: var(--dark-theme-bg) !important;
     color: var(--dark-theme-fg) !important;
-    border: solid 3px var(--dark-theme-bg);
+    border: solid 2px var(--dark-theme-bg); 
   }
 
   ::-webkit-scrollbar {
@@ -139,12 +139,12 @@ button {
 .sidebar nav {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .sidebar nav.settings {
   position: fixed;
-  bottom: 2px;
+  bottom: 5px;
 }
 
 .sidebar button {
@@ -214,7 +214,7 @@ button {
   left: 40px;
   right: var(--margin);
   top: var(--margin);
-  bottom: var(--margin);
+  bottom: 25px;
   /* border: solid 1px yellow; */
   padding: 10px;
   /* position: fixed;
@@ -301,12 +301,20 @@ button {
   min-height: fit-content;
   padding-top: 2px;
   display: flex;
-  flex-direction: row;
-  font-size: smaller;
+  flex-direction: column;
 }
 
-.subscription.header {
-  border-bottom: var(--sidebar-bg) solid 2px;
+.subscription .info{
+  display: flex;
+  flex-direction: row;
+  font-size: smaller;
+  height: 20px;
+}
+
+.subscription .header {
+  border-bottom: var(--sidebar-bg) solid 1px;
+  font-weight: bolder;
+  display: flex;
 }
 
 .subscription .name {
@@ -315,14 +323,15 @@ button {
 
 .subscription .timestamp {
   position: absolute;
-  right: 100px;
+  right: 110px;
   width: 180px;
 }
 
 .subscription .update_rate {
   position: absolute;
-  right: 30px;
-  width: 70px
+  right: 40px;
+  width: 70px;
+  text-align: right;
 }
 
 .subscription .status {
@@ -335,6 +344,7 @@ button {
 .subscription .url {
   width:100%;
   text-align: left;
+  font-size: x-small;
 }
 
 #add_subscription_form {
@@ -342,8 +352,9 @@ button {
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-top: var(--sidebar-bg) solid 2px;
+  border-top: var(--sidebar-bg) solid 1px;
   margin-top: 2px;
+  font-weight: bolder;
 }
 
 #add_subscription_form input {
@@ -376,15 +387,15 @@ button {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  border-radius: 5px;
-  /* border-radius: var(--radius); */
+  /* border-radius: 3px; */
+  border-radius: var(--radius);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: var(--sidebar-fg);
-  border-radius: 3px;
-  /* border-radius: var(--radius); */
+  /* border-radius: 3px; */
+  border-radius: var(--radius);
 }
 
 /* Handle on hover */

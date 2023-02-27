@@ -1,4 +1,4 @@
-use std::{io::Read};
+use std::io::Read;
 use std::fs::OpenOptions;
 use std::fmt;
 

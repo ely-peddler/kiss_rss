@@ -82,7 +82,7 @@ fn load_subscriptions(state: tauri::State<LockedSubscriptionSet>) -> bool {
     match subscription_set.load() {
         Ok(()) => true,
         Err(e) => {
-            println!("{}",e);
+            println!("Problem loading the subscriptions: {}",e);
             false
         }
     }
@@ -93,6 +93,9 @@ fn add_subscription(state: tauri::State<LockedSubscriptionSet>, url: String) {
     let mut mutex_gd = state.0.lock().unwrap();
     let subscription_set = mutex_gd.as_mut().unwrap();
     subscription_set.add_from_url(&url);
+    subscription_set.save().unwrap_or_else(|error| {
+        println!("Problem saving the subscriptions: {:?}", error);
+    });
 }
 
 #[tauri::command]
@@ -114,18 +117,21 @@ fn get_subscriptions_table(state: tauri::State<LockedSubscriptionSet>) -> String
     let mutex_gd = state.0.lock().unwrap();
     let subscription_set = mutex_gd.as_ref().unwrap();
     let mut html = String::new();
-    html += "<div class=\"subscription header\">";
+    html += "<div class=\"subscription\">";
+    html += "<div class=\"header\">";
     html += "<div class=\"name\">Name</div>";
     html += "<div class=\"timestamp\">Last Sync</div>";
     html += "<div class=\"update_rate\">Updates</div>";
     html += "<div class=\"status\">OK</div>";
-    html += "</div>";
+    html += "</div></div>";
     for subscription in subscription_set {
         html += "<div class=\"subscription\">";
+        html += "<div class=\"info\">";
         html += &format!("<div class=\"name\">{}</div>", subscription.name);
         html += &format!("<div class=\"timestamp\">{}</div>", subscription.last_sync);
         html += &format!("<div class=\"update_rate\">{:.0} / day</div>", subscription.update_rate*24.0);
         html += &format!("<div class=\"status\">{}</div>", subscription.status);
+        html += "</div>";
         // html += &format!("<div class=\"url\">{}</div>", subscription.url);
         html += "</div>";
     }
