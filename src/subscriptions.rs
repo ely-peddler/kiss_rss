@@ -243,6 +243,14 @@ impl SubscriptionSet {
         Ok(())
     }
 
+    pub fn len(&self) -> usize {
+        self.subscriptions.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.subscriptions.is_empty()
+    }
+
     pub fn add(&mut self, subscrition: &Subscription) {
         self.subscriptions.push(subscrition.to_owned());
     }

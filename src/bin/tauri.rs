@@ -156,7 +156,6 @@ fn get_items(state: tauri::State<LockedSubscriptionSet>) -> String {
     html
 }
 
-
 struct LockedSubscriptionSet(Mutex<Option<SubscriptionSet>>);
     
 fn main() {
