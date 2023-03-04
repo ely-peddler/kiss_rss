@@ -11,8 +11,6 @@ roxmltree = "0.18.0"
 dirs = "4.0.0"
 chrono = "0.4.23"
 xml-builder = "0.5.1"
-dioxus = { version = "0.3.1", optional = true }
-dioxus-desktop = { version = "0.3.0", optional = true }
 url = { version = "2.3.1", optional = true }
 serde_json = { version = "1.0", optional = true }
 serde = { version = "1.0", optional = true, features = ["derive"] }
@@ -21,7 +19,6 @@ scraper = { version = "0.14.0", optional = true}
 
 
 [features]
-build-dioxus = ["dioxus", "dioxus-desktop"]
 build-tauri = ["url", "serde_json", "serde", "tauri", "scraper"]
 
 # by default Tauri runs in production mode
@@ -32,11 +29,7 @@ build-tauri = ["url", "serde_json", "serde", "tauri", "scraper"]
 custom-protocol = ["tauri/custom-protocol"]
 
 [[bin]]         
-name = "dioxus"    
-required-features = ["build-dioxus"] 
-
-[[bin]]         
-name = "tauri"    
+name = "kiss_rss"    
 required-features = ["custom-protocol", "build-tauri"] 
 
 [build-dependencies]

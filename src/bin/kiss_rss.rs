@@ -156,7 +156,7 @@ fn get_items(state: tauri::State<LockedSourceList>) -> String {
 }
 
 struct LockedSourceList(Mutex<Option<SourceList>>);
-    
+
 fn main() {
     let locked_subs = LockedSourceList(Mutex::new(Some(SourceList::new())));
     tauri::Builder::default()
