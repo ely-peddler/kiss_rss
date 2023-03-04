@@ -39,7 +39,7 @@ impl fmt::Display for Status {
 }
 
 #[derive(Clone)]
-pub struct Subscription {
+pub struct Source {
     pub name : String,
     pub url: String,
     pub status: Status,
@@ -48,11 +48,11 @@ pub struct Subscription {
     pub item_list: NewsItemList
 }
 
-impl Subscription {
-    pub fn from_url(url: &str) -> Option<Subscription> {
+impl Source {
+    pub fn from_url(url: &str) -> Option<Source> {
         if url.len() > 0 {
             Some(
-                Subscription {
+                Source {
                     name: "".to_string(),
                     url: url.to_string(),
                     status: Status::default(),
@@ -171,17 +171,17 @@ impl Subscription {
 
 
 #[derive(Clone)]
-pub struct SubscriptionSet {
+pub struct SourceList {
     pub opml_file_name: String,
-    pub subscriptions: Vec<Subscription>
+    pub sources: Vec<Source>
 }
 
-impl SubscriptionSet {
+impl SourceList {
 
-    pub fn new() -> SubscriptionSet {
-        SubscriptionSet { 
+    pub fn new() -> SourceList {
+        SourceList { 
             opml_file_name: "kiss_rss.opml".to_string(),
-            subscriptions: Vec::new()
+            sources: Vec::new()
         }
     }
 
@@ -193,13 +193,13 @@ impl SubscriptionSet {
         opml_file.read_to_string(&mut opml_text)?;
         let opml = roxmltree::Document::parse(opml_text.as_str())?;
         let outlines = opml.descendants().filter(|x| x.has_tag_name("outline"));
-        self.subscriptions = Vec::new();
+        self.sources = Vec::new();
         for outline in outlines {
             if let Some(url) = outline.attribute("xmlUrl") {
                 if url.len() > 0 {
-                    if let Some(subscription) = &mut Subscription::from_url(url) {
-                        subscription.set_name(outline.attribute("text").unwrap_or(""));
-                        self.add(subscription);
+                    if let Some(source) = &mut Source::from_url(url) {
+                        source.set_name(outline.attribute("text").unwrap_or(""));
+                        self.add(source);
                     }
                 }
             }
@@ -221,11 +221,11 @@ impl SubscriptionSet {
         head.add_child(title).unwrap();
         opml.add_child(head).unwrap();
         let mut body = XMLElement::new("body");
-        for subscription in &self.subscriptions {
+        for source in &self.sources {
             let mut outline = XMLElement::new("outline");
-            outline.add_attribute("text", subscription.name.as_str());
+            outline.add_attribute("text", source.name.as_str());
             outline.add_attribute("type", "rss");
-            outline.add_attribute("xmlUrl", subscription.url.as_str());
+            outline.add_attribute("xmlUrl", source.url.as_str());
             body.add_child(outline).unwrap();
         }
         opml.add_child(body).unwrap();
@@ -244,79 +244,79 @@ impl SubscriptionSet {
     }
 
     pub fn len(&self) -> usize {
-        self.subscriptions.len()
+        self.sources.len()
     }
 
     pub fn is_empty(&self) -> bool {
-        self.subscriptions.is_empty()
+        self.sources.is_empty()
     }
 
-    pub fn add(&mut self, subscrition: &Subscription) {
-        self.subscriptions.push(subscrition.to_owned());
+    pub fn add(&mut self, subscrition: &Source) {
+        self.sources.push(subscrition.to_owned());
     }
 
     pub fn add_from_url(&mut self, url: &str) {
-        if let Some(subscription) = &Subscription::from_url(url) {
-            self.add(subscription);
+        if let Some(source) = &Source::from_url(url) {
+            self.add(source);
         }
     }
 
     pub fn sync_all(&mut self) {
-        for subscription in &mut self.subscriptions {
-            subscription.sync();
+        for source in &mut self.sources {
+            source.sync();
         }
     }
 
     pub fn sync(&mut self, url: &str)  {
-        for subscription in &mut self.subscriptions {
-            if subscription.url == url {
-                subscription.sync();
+        for source in &mut self.sources {
+            if source.url == url {
+                source.sync();
             }
         }
     }
 
     pub fn get_items(&self) -> NewsItemList {
         let mut item_list = NewsItemList::new();
-        for subscription in &self.subscriptions {
-            item_list.extend(&subscription.item_list);
+        for source in &self.sources {
+            item_list.extend(&source.item_list);
         }
         item_list.normalise();
         item_list
     }
 }
 
-pub struct SubscriptionSetIter<'a> {
-    subcription_set: &'a SubscriptionSet,
+pub struct SourceListIter<'a> {
+    subcription_set: &'a SourceList,
     i: usize,
 }
 
-impl<'a> Iterator for SubscriptionSetIter<'a> {
-    type Item = &'a Subscription;
+impl<'a> Iterator for SourceListIter<'a> {
+    type Item = &'a Source;
     fn next(&mut self) -> Option<Self::Item> {
-        if self.i >= self.subcription_set.subscriptions.len() {
+        if self.i >= self.subcription_set.sources.len() {
             None
         } else {
             self.i += 1;
-            Some(&self.subcription_set.subscriptions[self.i - 1])
+            Some(&self.subcription_set.sources[self.i - 1])
         }
     }
 }
 
-impl<'a> IntoIterator for &'a SubscriptionSet {
-    type Item = &'a Subscription;
-    type IntoIter = SubscriptionSetIter<'a>;
+impl<'a> IntoIterator for &'a SourceList {
+    type Item = &'a Source;
+    type IntoIter = SourceListIter<'a>;
     fn into_iter(self) -> Self::IntoIter {
-        SubscriptionSetIter {
+        SourceListIter {
             subcription_set: self,
             i: 0,
         }
     }
 }
 
-// impl IntoIterator for SubscriptionSet {
-//     type Item = Subscription;
+// impl IntoIterator for SourceList {
+//     type Item = Source;
 //     type IntoIter = std::vec::IntoIter<Self::Item>;
 //     fn into_iter(self) -> Self::IntoIter {
-//         self.subscriptions.iter()
+//         self.sources.iter()
 //     }
 // }

@@ -73,7 +73,7 @@
     border-left-color: var(--sidebar-hilite) !important;
   } */
 
-  .news_itms.subscription_name, .news_itms.timestamp {
+  .news_itms.source_name, .news_itms.timestamp {
     color: var(--sidebar-bg) !important;
   }
 
@@ -105,7 +105,7 @@
     border-left-color: var(--sidebar-hilite) !important;
   } */
 
-  .news_itms.subscription_name, .news_itms.timestamp {
+  .news_itms.source_name, .news_itms.timestamp {
     color: var(--sidebar-fg) !important;
   }
 
@@ -294,7 +294,7 @@ button {
   justify-content: space-between;
 }
 
-.news_item .subscription_name {
+.news_item .source_name {
   text-align: left;
   font-size: x-small;
   width:50%;
@@ -318,7 +318,7 @@ button {
   width: 100%;
 }
 
-.subscription {
+.source {
   width: 100%;
   min-height: fit-content;
   padding-top: 2px;
@@ -326,44 +326,44 @@ button {
   flex-direction: column;
 }
 
-.subscription .info{
+.source .info{
   display: flex;
   flex-direction: row;
   font-size: smaller;
   height: 20px;
 }
 
-.subscription .name {
+.source .name {
   flex: 1
 }
 
-.subscription .timestamp {
+.source .timestamp {
   position: absolute;
   right: 110px;
   width: 180px;
 }
 
-.subscription .update_rate {
+.source .update_rate {
   position: absolute;
   right: 40px;
   width: 70px;
   text-align: right;
 }
 
-.subscription .status {
+.source .status {
   position: absolute;
   right: 4px;
   width: 25px;
   text-align: center;
 }
 
-.subscription .url {
+.source .url {
   width:100%;
   text-align: left;
   font-size: x-small;
 }
 
-#add_subscription_form {
+#add_source_form {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -373,7 +373,7 @@ button {
   font-weight: bolder;
 }
 
-#add_subscription_form input {
+#add_source_form input {
   flex: 1;
   height: fit-content;
   color: inherit;
@@ -383,7 +383,7 @@ button {
   /* margin-right: 30px; */
   padding: 2px;
 }
-#add_subscription_form button {
+#add_source_form button {
   padding: 0;
   width: 22px;
   text-align: center;

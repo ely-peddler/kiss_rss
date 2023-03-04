@@ -1,6 +1,6 @@
 #[derive(Ord, PartialOrd, Clone)]
 pub struct NewsItem {
-    pub subscription: String,
+    pub source: String,
     pub title : String,
     pub url: String,
     pub timestamp: chrono::DateTime<chrono::Utc>,
@@ -8,9 +8,9 @@ pub struct NewsItem {
 }
 
 impl NewsItem {
-    pub fn new(subscription: &str, title: &str, url: &str, timestamp: &chrono::DateTime<chrono::Utc>, summary: &str) -> NewsItem {
+    pub fn new(source: &str, title: &str, url: &str, timestamp: &chrono::DateTime<chrono::Utc>, summary: &str) -> NewsItem {
         NewsItem { 
-            subscription: subscription.to_string(),
+            source: source.to_string(),
             title: title.to_string(), 
             url: url.to_string(), 
             timestamp: timestamp.to_owned(),

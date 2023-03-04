@@ -23,7 +23,7 @@
         <button class="tab_toggle" id='bookmarks_toggle' value="bookmarks">☆</button>
       </nav>
       <nav class="tab_nav settings">
-        <button class="tab_toggle" id='subscriptions_toggle' value="subscriptions">🛈</button>
+        <button class="tab_toggle" id='sources_toggle' value="sources">🛈</button>
         <button class="tab_toggle" id="settings_toggle" value="settings">⛭</button>
       </nav>
     </div>
@@ -62,9 +62,9 @@
         </div>
       </div>
     </div>
-    <div class="tab" id="subscriptions_tab">
+    <div class="tab" id="sources_tab">
       <div class="section">
-        <div class="subscription">
+        <div class="source">
           <div class="name">Name</div>
           <div class="timestamp">Last Sync</div>
           <div class="update_rate">Updates</div>
@@ -73,18 +73,18 @@
       </div>
       <div class="content">
         <div class="overflowing">
-          <div id="subscriptions"></div>
+          <div id="sources"></div>
         </div>
       </div>
       <div class="section">
         <div class="expand">Add Source From Url</div>
-        <input id="subscription_url" type="text" placeholder="http://example.com/rss.xml" width="40">
-        <button id="add_subscription_from_url">+</button>
+        <input id="source_url" type="text" placeholder="http://example.com/rss.xml" width="40">
+        <button id="add_source_from_url">+</button>
       </div>
       <div class="section">
         <div class="expand">Add Known Source</div>
-        <select id="known_subscription"></select>
-        <button id="add_known_subscription">+</button>
+        <select id="known_source"></select>
+        <button id="add_known_source">+</button>
       </div>
     </div>
     <div class="tab" id="settings_tab">

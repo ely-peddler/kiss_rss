@@ -4,4 +4,4 @@ extern crate dirs; // 4.0.0
 extern crate chrono; // 0.4.23
 
 pub mod news;
-pub mod subscriptions;
+pub mod sources;

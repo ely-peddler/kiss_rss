@@ -1,37 +1,37 @@
 const { invoke } = window.__TAURI__.tauri;
 
-async function load_subscriptions() {
-  let loaded = await invoke("load_subscriptions");
+async function load_sources() {
+  let loaded = await invoke("load_sources");
   if(loaded) {
-    await sync_all_subscriptions();
+    await sync_all_sources();
     document.getElementById("items_toggle").click();
   } else {
-    await update_subscriptions();
-    document.getElementById("subscriptions_toggle").click();
+    await update_sources();
+    document.getElementById("sources_toggle").click();
   }
 }
 
-async function add_subscription_from_url() {
-  let url = document.getElementById('subscription_url').value;
-  document.getElementById('new_subscription_url').value = "";
-  invoke("add_subscription", { url: url });
-  await sync_subscription(url);
+async function add_source_from_url() {
+  let url = document.getElementById('source_url').value;
+  document.getElementById('new_source_url').value = "";
+  invoke("add_source", { url: url });
+  await sync_source(url);
 }
 
-async function sync_subscription(url) {
-  await invoke("sync_subscription", { url: url });
-  await update_subscriptions();
+async function sync_source(url) {
+  await invoke("sync_source", { url: url });
+  await update_sources();
   await update_items();
 }
 
-async function sync_all_subscriptions() {
-  await invoke("sync_all_subscriptions");
-  await update_subscriptions();
+async function sync_all_sources() {
+  await invoke("sync_all_sources");
+  await update_sources();
   await update_items();
 }
 
-async function update_subscriptions() {
-  document.getElementById("subscriptions").innerHTML = await invoke("get_subscriptions_table");
+async function update_sources() {
+  document.getElementById("sources").innerHTML = await invoke("get_sources_table");
 }
 
 async function update_items() {
@@ -61,7 +61,7 @@ async function update_items() {
 //   } else {
 //     document.getElementsByClassName("tab-toggle")[0].click();
 //   }
-//   update_subscriptions_display();
+//   update_sources_display();
 // }
 
 function clear_selected(elements) {
@@ -88,16 +88,16 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("add click handler to sync_all")
   document
     .getElementById("sync_all")
-    .addEventListener("click", () => sync_all_subscriptions());
-  console.log("add click handler to add_subscription_from_url")
+    .addEventListener("click", () => sync_all_sources());
+  console.log("add click handler to add_source_from_url")
   document
-    .getElementById("add_subscription_from_url")
-    .addEventListener("click", () => add_subscription_from_url());
+    .getElementById("add_source_from_url")
+    .addEventListener("click", () => add_source_from_url());
   tab_toggles = document.getElementsByClassName("tab_toggle");
   for (i = 0; i < tab_toggles.length; i++) {
     let name = tab_toggles[i].value
     console.log("add click handler to "+name)
     tab_toggles[i].addEventListener("click", () => toggle_tab(name));
   }
-  load_subscriptions();
+  load_sources();
 })
