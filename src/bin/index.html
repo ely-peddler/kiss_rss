@@ -27,11 +27,25 @@
         <button class="tab_toggle" id="settings_toggle" value="settings">⛭</button>
       </nav>
     </div>
-    <div class="tab selected"><div class="content" style="display:flex; flex-direction: column; align-items: center; padding-top: 50px;"><img src="256x256.png"><h1>Loading</h1></div></div>
+    <div class="tab selected">
+      <div class="content" style="display:flex; flex-direction: column; align-items: center; padding-top: 50px;"><img
+          src="256x256.png">
+        <h1>Loading</h1>
+      </div>
+    </div>
     <div class="tab" id="items_tab">
-      <!-- <div class="header">
-        <div class="name">News</div><button id="sync_all">⟳</button>
-      </div> -->
+      <div class="section">
+        <select>
+          <option>Last Hour</option>
+          <option>Today</option>
+          <option>All Time</option>
+        </select>
+        <select>
+          <option>All Sources</option>
+          <option>BBC</option>
+          <option>CNN</option>
+        </select>
+      </div>
       <div class="content">
         <div class="overflowing">
           <div id="items"></div>
@@ -39,9 +53,9 @@
       </div>
     </div>
     <div class="tab" id="bookmarks_tab">
-      <!-- <div class="header">
+      <div class="section">
         <div class="name">Bookmarks</div>
-      </div> -->
+      </div>
       <div class="content">
         <div class="overflowing">
           <div id="bookmarks"></div>
@@ -49,22 +63,32 @@
       </div>
     </div>
     <div class="tab" id="subscriptions_tab">
-      <!-- <div class="header">
-        <div class="name">Subscriptions</div>
-      </div> -->
+      <div class="section">
+        <div class="subscription">
+          <div class="name">Name</div>
+          <div class="timestamp">Last Sync</div>
+          <div class="update_rate">Updates</div>
+          <div class="status">OK</div>
+        </div>
+      </div>
       <div class="content">
         <div class="overflowing">
           <div id="subscriptions"></div>
         </div>
-        <div id="add_subscription_form">
-          <div>Add From Feed Url</div>
-          <input id="new_subscription_url" type="text" placeholder="http://example.com/rss.xml">
-          <button id="add_subscription">+</button>
-        </div>
+      </div>
+      <div class="section">
+        <div class="expand">Add Source From Url</div>
+        <input id="subscription_url" type="text" placeholder="http://example.com/rss.xml" width="40">
+        <button id="add_subscription_from_url">+</button>
+      </div>
+      <div class="section">
+        <div class="expand">Add Known Source</div>
+        <select id="known_subscription"></select>
+        <button id="add_known_subscription">+</button>
       </div>
     </div>
     <div class="tab" id="settings_tab">
-      <!-- <div class="header">
+      <!-- <div class="section">
         <div class="name">Settings</div>
       </div> -->
       <div class="content">

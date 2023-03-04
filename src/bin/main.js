@@ -11,8 +11,8 @@ async function load_subscriptions() {
   }
 }
 
-async function add_subscription() {
-  let url = document.getElementById('new_subscription_url').value;
+async function add_subscription_from_url() {
+  let url = document.getElementById('subscription_url').value;
   document.getElementById('new_subscription_url').value = "";
   invoke("add_subscription", { url: url });
   await sync_subscription(url);
@@ -89,10 +89,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("sync_all")
     .addEventListener("click", () => sync_all_subscriptions());
-  console.log("add click handler to add_subscription")
+  console.log("add click handler to add_subscription_from_url")
   document
-    .getElementById("add_subscription")
-    .addEventListener("click", () => add_subscription());
+    .getElementById("add_subscription_from_url")
+    .addEventListener("click", () => add_subscription_from_url());
   tab_toggles = document.getElementsByClassName("tab_toggle");
   for (i = 0; i < tab_toggles.length; i++) {
     let name = tab_toggles[i].value

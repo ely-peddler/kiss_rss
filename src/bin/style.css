@@ -15,6 +15,12 @@
   --radius: 0; /*6px;*/
   --margin: 1px;
 
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
@@ -47,7 +53,7 @@
 
 /* Light mode */
 @media (prefers-color-scheme: light) {
-  .content {
+  .tab {
     background-color: var(--light-theme-bg) !important;
     color: var(--light-theme-fg) !important;
     border: solid 2px var(--light-theme-bg);
@@ -79,7 +85,7 @@
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  .content {
+  .tab {
     background-color: var(--dark-theme-bg) !important;
     color: var(--dark-theme-fg) !important;
     border: solid 2px var(--dark-theme-bg); 
@@ -198,17 +204,21 @@ button {
   color: var(--sidebar-greyed);
 } */
 
+.expand {
+  flex: 1;
+}
+
 .tab.selected {
-  display: block;
+  display: flex;
 }
 
 .tab {
-  flex: 1;
-  display: flex;
+  /* flex: 1; */
+  display: flex; 
   flex-direction: column;
   display: none;
-  border-radius: var(--radius);
-  /* padding: 8px;
+  /*border-radius: var(--radius);
+   padding: 8px;
   padding-top: 2px; */
   position: absolute;
   left: 40px;
@@ -216,7 +226,6 @@ button {
   top: var(--margin);
   bottom: 25px;
   /* border: solid 1px yellow; */
-  padding: 10px;
   /* position: fixed;
   top: 40px;
   left: 40px;
@@ -224,10 +233,22 @@ button {
   bottom: 1px; */
 }
 
-/* .tab .header {
+.tab, .tab .section, .tab .content {
+  border-width: 1px;
+  border-color: var(--sidebar-bg);
+  border-style: solid;
+}
+
+.tab .section, .tab .content {
   display: flex;
+  padding: 3px;
+}
+
+.tab .section {
   flex-direction: row;
-  /* border: solid 1px red; 
+  /* 
+  display: flex;
+  border: solid 1px red; 
   position: absolute;
   left: 0;
   right: 0;
@@ -235,21 +256,22 @@ button {
   height: 25px;
   padding: 0 var(--margin);
   background-color: var(--sidebar-bg);
-  color: var(--sidebar-fg);
-} */
+  color: var(--sidebar-fg);*/
+} 
 
 .tab .content {
   flex: 1;
-  display: flex;
   flex-direction: column;
   overflow: auto;
+  /* 
+  display: flex;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   padding: 0 6px;
-  border-radius: var(--radius);
+  border-radius: var(--radius); */
   /* border: solid 1px blue; */
     /* margin: 0;
   top: 40px;
@@ -309,12 +331,6 @@ button {
   flex-direction: row;
   font-size: smaller;
   height: 20px;
-}
-
-.subscription .header {
-  border-bottom: var(--sidebar-bg) solid 1px;
-  font-weight: bolder;
-  display: flex;
 }
 
 .subscription .name {
