@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+	<head>
+		<title>Gaming</title>
+	</head>
+	<body>
+		<outline text="Realwire" type="rss" xmlUrl="https://www.realwire.com/rss/?id=467&row=&view=Synopsis"/>
+		<outline text="Gamespot" type="rss" xmlUrl="https://www.gamespot.com/feeds/mashup/"/>
+		<outline text="Nintendo Life" type="rss" xmlUrl="http://www.nintendolife.com/feeds/latest"/>
+		<outline text="Indiegames.com" type="rss" xmlUrl="http://www.indiegames.com/atom.xml"/>
+		<outline text="Arstechnica &#8211; Gaming" type="rss" xmlUrl="http://feeds.arstechnica.com/arstechnica/gaming/"/>
+		<outline text="Polygon" type="rss" xmlUrl="https://www.polygon.com/rss/index.xml"/>
+		<outline text="Touch Arcade" type="rss" xmlUrl="http://toucharcade.com/feed/"/>
+		<outline text="Game Informer" type="rss" xmlUrl="https://www.gameinformer.com/rss.xml"/>
+		<outline text="Xbox.com &#8211; News" type="rss" xmlUrl="http://news.xbox.com/feed"/>
+		<outline text="/r/gamers &#8211; Reddit" type="rss" xmlUrl="https://www.reddit.com/r/gamers/.rss"/>
+		<outline text="vg247" type="rss" xmlUrl="http://www.vg247.com/feed/"/>
+		<outline text="My Nintendo News" type="rss" xmlUrl="https://mynintendonews.com/feed"/>
+		<outline text="Rock Paper Shotgun" type="rss" xmlUrl="https://www.rockpapershotgun.com/feed"/>
+		<outline text="pcgamesn.com" type="rss" xmlUrl="https://www.pcgamesn.com/rss"/>
+		<outline text="Kotaku" type="rss" xmlUrl="https://kotaku.com/rss"/>
+		<outline text="Pushsquare" type="rss" xmlUrl="http://www.pushsquare.com/feeds/latest"/>
+	</body>
+</opml>

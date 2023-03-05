@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+	<head>
+		<title>Politics</title>
+	</head>
+	<body>
+		<outline text="Slate.com &#8211; Politics" type="rss" xmlUrl="https://slate.com/feeds/news-and-politics.rss"/>
+		<outline text="Fox News &#8211; Politics" type="rss" xmlUrl="http://feeds.foxnews.com/foxnews/politics"/>
+		<outline text="CNN Politics" type="rss" xmlUrl="http://rss.cnn.com/rss/cnn_allpolitics.rss"/>
+		<outline text="USA Today &#8211; Politics" type="rss" xmlUrl="http://rssfeeds.usatoday.com/TP-OnPolitics"/>
+		<outline text="Washington Examiner" type="rss" xmlUrl="http://www.washingtonexaminer.com/rss/politics"/>
+		<outline text="The Nation" type="rss" xmlUrl="https://www.thenation.com/feed/?post_type=article"/>
+		<outline text="Daily Signal" type="rss" xmlUrl="http://dailysignal.com//feed/"/>
+		<outline text="MSNBC" type="rss" xmlUrl="http://www.msnbc.com/feeds/latest"/>
+		<outline text="Politico" type="rss" xmlUrl="https://rss.politico.com/politics-news.xml"/>
+	</body>
+</opml>

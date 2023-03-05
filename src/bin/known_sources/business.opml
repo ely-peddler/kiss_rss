@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+	<head>
+		<title>Business</title>
+	</head>
+	<body>
+		<outline text="Entrepeneur.com" type="rss" xmlUrl="https://feeds.feedburner.com/entrepreneur/latest"/>
+		<outline text="Harvard Business" type="rss" xmlUrl="http://feeds.harvardbusiness.org/harvardbusiness/"/>
+		<outline text="Freakonomics" type="rss" xmlUrl="http://freakonomics.com//feed/"/>
+		<outline text="The Big Picture" type="rss" xmlUrl="http://feeds.feedburner.com/TheBigPicture"/>
+		<outline text="Fortune" type="rss" xmlUrl="http://fortune.com/feed/"/>
+		<outline text="Economist" type="rss" xmlUrl="http://www.economist.com/rss/the_world_this_week_rss.xml"/>
+		<outline text="The Non-Profit Times" type="rss" xmlUrl="http://www.thenonprofittimes.com/feed/"/>
+		<outline text="SBN Online" type="rss" xmlUrl="http://www.sbnonline.com/feed/"/>
+		<outline text="McKinsey" type="rss" xmlUrl="https://www.mckinsey.com/insights/rss.aspx"/>
+		<outline text="Home Business Mag" type="rss" xmlUrl="https://homebusinessmag.com/feed/"/>
+		<outline text="Business Insider" type="rss" xmlUrl="http://feeds2.feedburner.com/businessinsider"/>
+		<outline text="Calculated Risk" type="rss" xmlUrl="http://feeds.feedburner.com/CalculatedRisk"/>
+		<outline text="Huffington Post &#8211; Business" type="rss" xmlUrl="https://www.huffingtonpost.com/section/business/feed"/>
+	</body>
+</opml>

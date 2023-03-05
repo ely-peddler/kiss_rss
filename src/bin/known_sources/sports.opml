@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+	<head>
+		<title>Sports</title>
+	</head>
+	<body>
+		<outline text="BBC Sports" type="rss" xmlUrl="http://feeds.bbci.co.uk/sport/rss.xml?edition=int#"/>
+		<outline text="ESPN" type="rss" xmlUrl="http://www.espn.com/espn/rss/news"/>
+		<outline text="Yahoo Sports" type="rss" xmlUrl="https://sports.yahoo.com/rss/"/>
+		<outline text="BBC Sports &#8211; World edition" type="rss" xmlUrl="http://newsrss.bbc.co.uk/rss/sportonline_world_edition/front_page/rss.xml"/>
+		<outline text="We the sports guys" type="rss" xmlUrl="https://www.westhesportsguy.com/feeds/posts/default"/>
+		<outline text="Fox Sports" type="rss" xmlUrl="https://api.foxsports.com/v1/rss?partnerKey=zBaFxRyGKCfxBagJG9b8pqLyndmvo7UU"/>
+		<outline text="Talk Sports" type="rss" xmlUrl="https://talksport.com/rss/sports-news/all/feed"/>
+		<outline text="CBS Sports" type="rss" xmlUrl="https://rss.cbssports.com/rss/headlines/"/>
+		<outline text="ISSF-sports.org" type="rss" xmlUrl="https://www.issf-sports.org/rss/news.html"/>
+	</body>
+</opml>

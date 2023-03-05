@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+	<head>
+		<title>Technology</title>
+	</head>
+	<body>
+		<outline text="Techcrunch" type="rss" xmlUrl="https://techcrunch.com/"/>
+		<outline text="Wired" type="rss" xmlUrl="http://feeds.wired.com/wired/index"/>
+		<outline text="NYTimes &#8211; Technology" type="rss" xmlUrl="http://feeds.nytimes.com/nyt/rss/Technology"/>
+		<outline text="MacWorld" type="rss" xmlUrl="http://rss.macworld.com/macworld/feeds/main"/>
+		<outline text="PCWorld" type="rss" xmlUrl="https://www.pcworld.com/news/rss"/>
+		<outline text="LifeHacker" type="rss" xmlUrl="https://lifehacker.com/rss"/>
+		<outline text="Engadget.com" type="rss" xmlUrl="https://www.engadget.com/rss.xml"/>
+		<outline text="ReadWrite" type="rss" xmlUrl="http://readwrite.com/feed/"/>
+		<outline text="Mashable" type="rss" xmlUrl="http://feeds.mashable.com/Mashable"/>
+		<outline text="O&#8217;Reilly Radar" type="rss" xmlUrl="http://feeds.feedburner.com/oreilly/radar/atom"/>
+		<outline text="Gizmodo" type="rss" xmlUrl="https://gizmodo.com/rss"/>
+		<outline text="Technology Review" type="rss" xmlUrl="https://www.technologyreview.com/topnews.rss"/>
+		<outline text="Venture Beat" type="rss" xmlUrl="https://venturebeat.com/feed/"/>
+		<outline text="Computer World" type="rss" xmlUrl="http://www.computerworld.com/index.rss"/>
+		<outline text="MakeUsOf" type="rss" xmlUrl="http://feeds.feedburner.com/Makeuseof"/>
+		<outline text="CNet.com" type="rss" xmlUrl="http://www.cnet.com/rss/news"/>
+		<outline text="HowToGeek" type="rss" xmlUrl="http://feeds.howtogeek.com/HowToGeek"/>
+	</body>
+</opml>

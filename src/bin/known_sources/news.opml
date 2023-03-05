@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+	<head>
+		<title>News</title>
+	</head>
+	<body>
+		<outline text="BBC News - Home" type="rss" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml" />
+		<outline text="EL PAÍS" type="rss" xmlUrl="https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada" />
+		<outline text="elmundo" type="rss" xmlUrl="http://rss.elmundo.es/rss/descarga.htm?data2=4" />
+		<outline text="PinkNews" type="rss" xmlUrl="http://feeds.feedburner.com/Pinknews" />
+		<outline text="Sky News" type="rss" xmlUrl="https://feeds.skynews.com/feeds/rss/home.xml" />
+		<outline text="The Guardian" type="rss" xmlUrl="https://www.theguardian.com/uk/rss" />
+		<outline text="The Independent UK" type="rss" xmlUrl="https://www.independent.co.uk/news/uk/rss" />
+		<outline text="Wallstreet Journal" type="rss" xmlUrl="https://feeds.a.dj.com/rss/RSSWorldNews.xml"/>
+		<outline text="Fox News Science" type="rss" xmlUrl="http://feeds.foxnews.com/foxnews/scitech"/>
+		<outline text="CNN &#8211; Top Stories" type="rss" xmlUrl="http://rss.cnn.com/rss/cnn_topstories.rss"/>
+		<outline text="Time Magazine &#8211; Top Stories" type="rss" xmlUrl="http://feeds.feedburner.com/time/topstories"/>
+		<outline text="NYTimes &#8211; Homepage" type="rss" xmlUrl="http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"/>
+		<outline text="Yahoo News &#8211; Latest news and headlines" type="rss" xmlUrl="https://www.yahoo.com/news/rss/topstories"/>
+		<outline text="Washington Post" type="rss" xmlUrl="http://feeds.washingtonpost.com/rss/world"/>
+		<outline text="Vox &#8211; All" type="rss" xmlUrl="https://www.vox.com/rss/index.xml"/>
+		<outline text="BBC News &#8211; World" type="rss" xmlUrl="http://feeds.bbci.co.uk/news/world/rss.xml"/>
+		<outline text="Huffington Post" type="rss" xmlUrl="https://www.huffingtonpost.com/section/front-page/feed"/>
+		<outline text="CNN &#8211; World news" type="rss" xmlUrl="http://rss.cnn.com/rss/cnn_world.rss"/>
+		<outline text="ABC News &#8211;  Top stories" type="rss" xmlUrl="http://abcnews.go.com/abcnews/topstories"/>
+		<outline text="Drudge Report" type="rss" xmlUrl="https://feedpress.me/drudgereportfeed"/>
+		<outline text="Market Watch &#8211; Top stories" type="rss" xmlUrl="http://www.marketwatch.com/rss/topstories/"/>
+		<outline text="Salon.com" type="rss" xmlUrl="https://www.salon.com/feed/"/>
+		<outline text="New Yorker &#8211; Everything" type="rss" xmlUrl="http://www.newyorker.com/services/rss/feeds/everything.xml"/>
+		<outline text="New York Post" type="rss" xmlUrl="https://nypost.com/feed/"/>
+	</body>
+</opml>
