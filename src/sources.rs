@@ -42,10 +42,12 @@ impl fmt::Display for Status {
 pub struct Source {
     pub name : String,
     pub url: String,
+    pub format: String,
     pub status: Status,
     pub last_sync: chrono::DateTime<chrono::Utc>,
     pub update_rate: f32,
-    pub item_list: NewsItemList
+    pub item_list: NewsItemList,
+    pub max_days: i64
 }
 
 impl Source {
@@ -55,10 +57,12 @@ impl Source {
                 Source {
                     name: "".to_string(),
                     url: url.to_string(),
+                    format: "unknown".to_ascii_lowercase(),
                     status: Status::default(),
                     last_sync: chrono::DateTime::default(),
                     update_rate: 0.0,
-                    item_list: NewsItemList::new()
+                    item_list: NewsItemList::new(),
+                    max_days: 5
                 }
             )
         } else { None }
@@ -105,14 +109,18 @@ impl Source {
     fn parse(&mut self, rss: &str) -> Result<NewsItemList, Box<(dyn std::error::Error)>> {
         let mut item_list = NewsItemList::new();
         let doc = roxmltree::Document::parse(rss)?;
-        let mut channel = doc.root().first_element_child().ok_or("xml doc is missing child elements")?;
-        let is_rss = channel.has_tag_name("rss");
+        let mut channel = doc.root().children().find(|n| n.has_tag_name("rss") || n.has_tag_name("feed")).ok_or("xml doc has neither rss or feed element")?;
+        let is_rss = channel.has_tag_name("rss") || channel.has_tag_name("channel");
         let name_tag = "title";
         let mut item_tag = "entry";
         let mut timestamp_tag = "updated";
         let mut summary_tag  = "content";
+        self.format = "atom".to_string();
         if is_rss {
-            channel = channel.first_element_child().ok_or("rss element is missing channel element")?;
+            self.format = "rss".to_string();
+            if !channel.has_tag_name("channel") {
+                channel = channel.children().find(|n| n.has_tag_name("channel")).ok_or("rss element is missing channel element")?;
+            }
             item_tag = "item";
             timestamp_tag = "pubDate";
             summary_tag = "description";        
@@ -139,18 +147,27 @@ impl Source {
                         url = item_sub_node.attribute("href").unwrap_or("");
                     }
                 } else if item_sub_node.has_tag_name(timestamp_tag) {
-                    let timestamp_str = item_sub_node.text().unwrap_or("");
-                    if is_rss{
+                    let timestamp_str = item_sub_node.text().unwrap_or("").trim();
+                    timestamp = match chrono::DateTime::parse_from_rfc2822(timestamp_str) {
+                        Ok(t) => t,
+                        Err(_) => chrono::DateTime::parse_from_rfc3339(timestamp_str)
+                                    .unwrap_or_default()
+                        }.with_timezone(&chrono::Utc);
+                    //println!("{} {}", timestamp_str, timestamp)
+                    /*
+                    if is_rss {
                         timestamp = chrono::DateTime::parse_from_rfc2822(timestamp_str).unwrap_or_default().with_timezone(&chrono::Utc);
                     } else {
                         timestamp = chrono::DateTime::parse_from_rfc3339(timestamp_str).unwrap_or_default().with_timezone(&chrono::Utc);
                     }
+                    */
                 } else if  item_sub_node.has_tag_name(summary_tag) {
                     summary = item_sub_node.text().unwrap_or("");
                 }
             }
-            if (chrono::offset::Utc::now() - timestamp).num_days() < 3 {
-                // only keep items from the last two daya
+            //println!("{} {} {}", title, url, &timestamp);
+            if (chrono::offset::Utc::now() - timestamp).num_days() < self.max_days {
+                // only keep items from the last two days
                 let item = NewsItem::new(&self.name, title, url, &timestamp, summary);
                 item_list.push(item);
             }
@@ -159,7 +176,7 @@ impl Source {
         // println!("Name: {} Count {}", &self.name, items.len());
         item_list.normalise();
         if item_list.len() > 0 {
-            let earliest = item_list.last().unwrap().timestamp;
+            let earliest = chrono::offset::Utc::now() - chrono::Duration::days(self.max_days);
             //println!("{} {} {}", self.name, earliest, item_list.last().unwrap().title);
             let duration = chrono::offset::Utc::now() - earliest;
             self.update_rate = (item_list.len() as f32 / duration.num_seconds() as f32) *60.0 * 60.0;
@@ -251,8 +268,10 @@ impl SourceList {
         self.sources.is_empty()
     }
 
-    pub fn add(&mut self, subscrition: &Source) {
-        self.sources.push(subscrition.to_owned());
+    pub fn add(&mut self, source: &Source) {
+        if self.sources.iter().find(|x| *x.url == source.url).is_none() {
+            self.sources.push(source.to_owned());
+        }
     }
 
     pub fn add_from_url(&mut self, url: &str) {
