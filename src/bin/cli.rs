@@ -1,6 +1,4 @@
-use kiss_rss::sources::SourceList;
-
-use std::{ thread, time };
+use kiss_rss::sources::{SourceList, Status};
 
 fn main() {
     let mut sources = SourceList::new();
@@ -8,13 +6,9 @@ fn main() {
     sources.sync_all();
     let _item_list = sources.get_items();
     for source in &sources {
-        println!("{} {}\t{}\t{}\t{}\t{}", source.status, source.update_rate, source.last_sync, source.update_rate, source.name, source.url);
+        if !matches!(source.status, Status::Ok) || source.update_rate == 0.0 {
+            println!("{} {}\t{}\t{}\t{}\t{}\t{}", source.status, source.status.get_message(), source.format, source.last_sync, source.update_rate, source.name, source.url);
+        }
     }
-    thread::sleep(time::Duration::from_secs(10));
-    sources.sync("https://www.theguardian.com/uk/rs");
-    for source in &sources {
-        println!("{} {}\t{}\t{}\t{}\t{}", source.status, source.update_rate, source.last_sync, source.update_rate, source.name, source.url);
-    }
-    sources.save().expect("Unable to save sources."); 
 
 }
