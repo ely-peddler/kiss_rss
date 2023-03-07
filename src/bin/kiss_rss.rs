@@ -4,8 +4,7 @@
 )]
 
 use std::fs;
-use std::io::Read;
-use std::{sync::Mutex , path::PathBuf, fs::OpenOptions};
+use std::sync::Mutex;
 
 use kiss_rss::sources::SourceList;
 use scraper::{ Html, Node::Text };
@@ -174,13 +173,14 @@ fn load_known_sources(handle: tauri::AppHandle) -> String {
                 println!("file {}", path.as_path().display());
                 let mut opt_gp = "".to_string();
                 let mut source_list = SourceList::new();
-                source_list.load(path);
-                opt_gp += &format!("<optgroup label=\"{}\">", source_list.name);
-                for source in &source_list {
-                    opt_gp += &format!("<option value=\"{}\">{}</option>", source.url, source.name);
+                if source_list.load(path).is_ok() {
+                    opt_gp += &format!("<optgroup label=\"{}\">", source_list.name);
+                    for source in &source_list {
+                        opt_gp += &format!("<option value=\"{}\">{}</option>", source.url, source.name);
+                    }
+                    opt_gp += "</optgroup>";
+                    ret += &opt_gp;
                 }
-                opt_gp += "</optgroup>";
-                ret += &opt_gp;
             }
         }
     }
