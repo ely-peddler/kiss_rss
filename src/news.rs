@@ -1,10 +1,10 @@
 #[derive(Ord, PartialOrd, Clone)]
 pub struct NewsItem {
-    pub source: String,
-    pub title : String,
-    pub url: String,
-    pub timestamp: chrono::DateTime<chrono::Utc>,
-    pub summary: String
+    source: String,
+    title : String,
+    url: String,
+    timestamp: chrono::DateTime<chrono::Utc>,
+    summary: String
 }
 
 impl NewsItem {
@@ -17,6 +17,13 @@ impl NewsItem {
             summary: summary.to_string()
         }
     }
+
+    pub fn source(&self) -> String { self.source.to_owned() }
+    pub fn title(&self) -> String { self.title.to_owned() }
+    pub fn url(&self) -> String { self.url.to_owned() }
+    pub fn timestamp(&self) -> chrono::DateTime<chrono::Utc> { self.timestamp }
+    pub fn summary(&self) -> String { self.summary.to_owned() }
+
 }
 
 impl PartialEq for NewsItem {
@@ -28,7 +35,7 @@ impl Eq for NewsItem {}
 
 #[derive(Clone)]
 pub struct NewsItemList {
-    pub items: Vec<NewsItem>
+    items: Vec<NewsItem>
 }
 
 impl NewsItemList {
