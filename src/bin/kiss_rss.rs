@@ -174,7 +174,7 @@ fn load_known_sources(handle: tauri::AppHandle) -> String {
                 let mut opt_gp = "".to_string();
                 let mut source_list = SourceList::new();
                 if source_list.load(path).is_ok() {
-                    opt_gp += &format!("<optgroup label=\"{}\">", source_list.name);
+                    opt_gp += &format!("<optgroup label=\"{}\">", source_list.name());
                     for source in &source_list {
                         opt_gp += &format!("<option value=\"{}\">{}</option>", source.url(), source.name());
                     }

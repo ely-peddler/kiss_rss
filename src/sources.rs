@@ -189,8 +189,8 @@ impl Source {
 
 #[derive(Clone)]
 pub struct SourceList {
-    pub name: String,
-    pub sources: Vec<Source>,
+    name: String,
+    sources: Vec<Source>,
     opml_file_path: PathBuf
 }
 
@@ -203,6 +203,8 @@ impl SourceList {
             opml_file_path: PathBuf::new()
         }
     }
+
+    pub fn name(&self) -> String { self.name.to_owned() }
 
     pub fn load_from_user_file(&mut self) -> Result<(), Box<(dyn std::error::Error)>> {
         let mut user_file_path = dirs::data_local_dir().ok_or("Unable to find local used dir")?;
