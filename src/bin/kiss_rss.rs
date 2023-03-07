@@ -3,7 +3,9 @@
     windows_subsystem = "windows"
 )]
 
-use std::sync::{ Mutex };
+use std::fs;
+use std::io::Read;
+use std::{sync::Mutex , path::PathBuf, fs::OpenOptions};
 
 use kiss_rss::sources::SourceList;
 use scraper::{ Html, Node::Text };
@@ -76,10 +78,10 @@ fn get_short_summary(html_summary: &str, len: usize) -> String {
 // }
 
 #[tauri::command]
-fn load_sources(state: tauri::State<LockedSourceList>) -> bool {
+fn load_user_sources(state: tauri::State<LockedSourceList>) -> bool {
     let mut mutex_gd = state.0.lock().unwrap();
     let source_set = mutex_gd.as_mut().unwrap();
-    match source_set.load() {
+    match source_set.load_from_user_file() {
         Ok(()) => true,
         Err(e) => {
             println!("Problem loading the sources: {}",e);
@@ -129,7 +131,9 @@ fn get_sources_table(state: tauri::State<LockedSourceList>) -> String {
         html += &format!("<div class=\"name\">{}</div>", source.name);
         html += &format!("<div class=\"timestamp\">{}</div>", source.last_sync);
         html += &format!("<div class=\"update_rate\">{:.0} / day</div>", source.update_rate*24.0);
-        html += &format!("<div class=\"status\">{}</div>", source.status);
+        html += &format!("<div class=\"icon\">{}</div>", source.status);
+        html += &format!("<div class=\"icon\" onclick=\"edit_source('{}')\">🖉</div>", source.url);
+        html += &format!("<div class=\"icon\" onclick=\"delete_source('{}')\">🗑</div>", source.url);
         html += "</div>";
         // html += &format!("<div class=\"url\">{}</div>", source.url);
         html += "</div>";
@@ -155,14 +159,45 @@ fn get_items(state: tauri::State<LockedSourceList>) -> String {
     html
 }
 
+#[tauri::command]
+fn load_known_sources(handle: tauri::AppHandle) -> String {
+   let resource_dir = handle.path_resolver()
+      .resource_dir()
+      .expect("failed to find resource dir");
+    let known_sources_dir = resource_dir.join("known_sources");
+    let paths = fs::read_dir(known_sources_dir).unwrap();
+    let mut ret = "".to_string();
+    for path in paths {
+        if path.is_ok() {
+            let path = path.unwrap().path();
+            if path.is_file() {
+                println!("file {}", path.as_path().display());
+                let mut opt_gp = "".to_string();
+                let mut source_list = SourceList::new();
+                source_list.load(path);
+                opt_gp += &format!("<optgroup label=\"{}\">", source_list.name);
+                for source in &source_list {
+                    opt_gp += &format!("<option value=\"{}\">{}</option>", source.url, source.name);
+                }
+                opt_gp += "</optgroup>";
+                ret += &opt_gp;
+            }
+        }
+    }
+    ret
+
+
+}
+
 struct LockedSourceList(Mutex<Option<SourceList>>);
 
 fn main() {
-    let locked_subs = LockedSourceList(Mutex::new(Some(SourceList::new())));
+    let user_sources = LockedSourceList(Mutex::new(Some(SourceList::new())));
     tauri::Builder::default()
-        .manage(locked_subs)
+        .manage(user_sources)
         .invoke_handler(tauri::generate_handler![
-            load_sources, 
+            load_user_sources, 
+            load_known_sources,
             add_source,
             sync_source, 
             sync_all_sources,

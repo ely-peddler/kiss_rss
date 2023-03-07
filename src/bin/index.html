@@ -65,10 +65,14 @@
     <div class="tab" id="sources_tab">
       <div class="section">
         <div class="source">
-          <div class="name">Name</div>
-          <div class="timestamp">Last Sync</div>
-          <div class="update_rate">Updates</div>
-          <div class="status">OK</div>
+          <div class="info">
+            <div class="name">Name</div>
+            <div class="timestamp">Last Sync</div>
+            <div class="update_rate">Updates</div>
+            <div class="icon">OK</div>
+            <div class="icon"></div>
+            <div class="icon"></div>
+          </div>
         </div>
       </div>
       <div class="content">
@@ -78,12 +82,13 @@
       </div>
       <div class="section">
         <div class="expand">Add Source From Url</div>
-        <input id="source_url" type="text" placeholder="http://example.com/rss.xml" width="40">
+        <input id="source_url" type="text" placeholder="http://example.com/rss.xml" size="40">
         <button id="add_source_from_url">+</button>
       </div>
       <div class="section">
         <div class="expand">Add Known Source</div>
-        <select id="known_source"></select>
+        <select id="known_source">
+        </select>
         <button id="add_known_source">+</button>
       </div>
     </div>

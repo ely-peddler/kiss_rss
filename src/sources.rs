@@ -1,4 +1,4 @@
-use std::io::Read;
+use std::{io::Read, path::PathBuf};
 use std::fs::OpenOptions;
 use std::fmt;
 
@@ -189,28 +189,40 @@ impl Source {
 
 #[derive(Clone)]
 pub struct SourceList {
-    pub opml_file_name: String,
-    pub sources: Vec<Source>
+    pub name: String,
+    pub sources: Vec<Source>,
+    opml_file_path: PathBuf
 }
 
 impl SourceList {
 
     pub fn new() -> SourceList {
         SourceList { 
-            opml_file_name: "kiss_rss.opml".to_string(),
-            sources: Vec::new()
+            name: "".to_string(),
+            sources: Vec::new(),
+            opml_file_path: PathBuf::new()
         }
     }
 
-    pub fn load(&mut self) -> Result<(), Box<(dyn std::error::Error)>> {
-        let mut opml_file_path = dirs::data_local_dir().ok_or("Unable to find local used dir")?;
-        opml_file_path = opml_file_path.join(&self.opml_file_name);
-        let mut opml_file = OpenOptions::new().read(true).open(opml_file_path)?;
+    pub fn load_from_user_file(&mut self) -> Result<(), Box<(dyn std::error::Error)>> {
+        let mut user_file_path = dirs::data_local_dir().ok_or("Unable to find local used dir")?;
+        user_file_path = user_file_path.join("kiss_rss.opml");
+        self.name = "User".to_string();
+        self.load(user_file_path)
+    }
+
+    pub fn load(&mut self, opml_file_path: PathBuf) -> Result<(), Box<(dyn std::error::Error)>> {
+        self.sources = Vec::new();
+        self.opml_file_path = opml_file_path;
+        let mut opml_file = OpenOptions::new().read(true).open(&self.opml_file_path)?;
         let mut opml_text = String::new();
         opml_file.read_to_string(&mut opml_text)?;
         let opml = roxmltree::Document::parse(opml_text.as_str())?;
+        self.name = match opml.descendants().find(|x| x.has_tag_name("title")) {
+            Some(node) => node.text().unwrap_or(&self.name),
+            None => &self.name
+        }.to_string();
         let outlines = opml.descendants().filter(|x| x.has_tag_name("outline"));
-        self.sources = Vec::new();
         for outline in outlines {
             if let Some(url) = outline.attribute("xmlUrl") {
                 if url.len() > 0 {
@@ -234,7 +246,7 @@ impl SourceList {
         opml.add_attribute("version", "1.0");
         let mut head = XMLElement::new("head");
         let mut title = XMLElement::new("title");
-        title.add_text("Kiss RSS".to_string()).unwrap();
+        title.add_text(self.name.to_string()).unwrap();
         head.add_child(title).unwrap();
         opml.add_child(head).unwrap();
         let mut body = XMLElement::new("body");
@@ -253,9 +265,9 @@ impl SourceList {
         // let xml_str = String::from_utf8(writer).unwrap();
         // println!("{}",xml_str);
 
-        let mut opml_file_path = dirs::data_local_dir().ok_or("Unable to find local used dir")?;
-        opml_file_path = opml_file_path.join(&self.opml_file_name);
-        let opml_file = OpenOptions::new().write(true).truncate(true).open(opml_file_path)?;
+        // let mut opml_file_path = dirs::data_local_dir().ok_or("Unable to find local used dir")?;
+        // opml_file_path = opml_file_path.join(&self.opml_file_name);
+        let opml_file = OpenOptions::new().write(true).truncate(true).open(&self.opml_file_path)?;
         xml.generate(opml_file).unwrap();
         Ok(())
     }

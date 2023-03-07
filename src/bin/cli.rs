@@ -2,7 +2,7 @@ use kiss_rss::sources::{SourceList, Status};
 
 fn main() {
     let mut sources = SourceList::new();
-    sources.load().expect("Unable to load sources."); 
+    sources.load_from_user_file().expect("Unable to load_from_user_file sources."); 
     sources.sync_all();
     let _item_list = sources.get_items();
     for source in &sources {
