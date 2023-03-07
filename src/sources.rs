@@ -40,14 +40,14 @@ impl fmt::Display for Status {
 
 #[derive(Clone)]
 pub struct Source {
-    pub name : String,
-    pub url: String,
-    pub format: String,
-    pub status: Status,
-    pub last_sync: chrono::DateTime<chrono::Utc>,
-    pub update_rate: f32,
-    pub item_list: NewsItemList,
-    pub max_days: i64
+    name : String,
+    url: String,
+    format: String,
+    status: Status,
+    last_sync: chrono::DateTime<chrono::Utc>,
+    update_rate: f32,
+    item_list: NewsItemList,
+    max_days: i64
 }
 
 impl Source {
@@ -68,13 +68,13 @@ impl Source {
         } else { None }
     }
 
-    // pub fn name(&self) -> String { self.name.to_owned() }
-    // pub fn url(&self) -> String { self.url.to_owned() }
-    // pub fn status(&self) -> String { self.status.to_string() }
-    // pub fn status_message(&self) -> String { self.status.get_message() }
-    // pub fn last_sync(&self) -> chrono::DateTime<chrono::Utc> { self.last_sync }
-    // pub fn update_rate(&self) -> f32 { self.update_rate }
-    // pub fn items(&self) -> NewsItemList { self.item_list.clone() }
+    pub fn name(&self) -> String { self.name.to_owned() }
+    pub fn url(&self) -> String { self.url.to_owned() }
+    pub fn format(&self) -> String { self.format.to_owned() }
+    pub fn status(&self) -> Status { self.status.to_owned() }
+    pub fn last_sync(&self) -> chrono::DateTime<chrono::Utc> { self.last_sync }
+    pub fn update_rate(&self) -> f32 { self.update_rate }
+    pub fn items(&self) -> NewsItemList { self.item_list.clone() }
 
     pub fn set_name(&mut self, name: &str) {
         if name.len() > 0 {

@@ -127,12 +127,12 @@ fn get_sources_table(state: tauri::State<LockedSourceList>) -> String {
     for source in source_set {
         html += "<div class=\"source\">";
         html += "<div class=\"info\">";
-        html += &format!("<div class=\"name\">{}</div>", source.name);
-        html += &format!("<div class=\"timestamp\">{}</div>", source.last_sync);
-        html += &format!("<div class=\"update_rate\">{:.0} / day</div>", source.update_rate*24.0);
-        html += &format!("<div class=\"icon\">{}</div>", source.status);
-        html += &format!("<div class=\"icon\" onclick=\"edit_source('{}')\">🖉</div>", source.url);
-        html += &format!("<div class=\"icon\" onclick=\"delete_source('{}')\">🗑</div>", source.url);
+        html += &format!("<div class=\"name\">{}</div>", source.name());
+        html += &format!("<div class=\"timestamp\">{}</div>", source.last_sync());
+        html += &format!("<div class=\"update_rate\">{:.0} / day</div>", source.update_rate()*24.0);
+        html += &format!("<div class=\"icon\">{}</div>", source.status());
+        html += &format!("<div class=\"icon\" onclick=\"edit_source('{}')\">🖉</div>", source.url());
+        html += &format!("<div class=\"icon\" onclick=\"delete_source('{}')\">🗑</div>", source.url());
         html += "</div>";
         // html += &format!("<div class=\"url\">{}</div>", source.url);
         html += "</div>";
@@ -176,7 +176,7 @@ fn load_known_sources(handle: tauri::AppHandle) -> String {
                 if source_list.load(path).is_ok() {
                     opt_gp += &format!("<optgroup label=\"{}\">", source_list.name);
                     for source in &source_list {
-                        opt_gp += &format!("<option value=\"{}\">{}</option>", source.url, source.name);
+                        opt_gp += &format!("<option value=\"{}\">{}</option>", source.url(), source.name());
                     }
                     opt_gp += "</optgroup>";
                     ret += &opt_gp;

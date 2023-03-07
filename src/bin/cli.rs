@@ -6,8 +6,8 @@ fn main() {
     sources.sync_all();
     let _item_list = sources.get_items();
     for source in &sources {
-        if !matches!(source.status, Status::Ok) || source.update_rate == 0.0 {
-            println!("{} {}\t{}\t{}\t{}\t{}\t{}", source.status, source.status.get_message(), source.format, source.last_sync, source.update_rate, source.name, source.url);
+        if !matches!(source.status(), Status::Ok) || source.update_rate() == 0.0 {
+            println!("{} {}\t{}\t{}\t{}\t{}\t{}", source.status(), source.status().get_message(), source.format(), source.last_sync(), source.update_rate(), source.name(), source.url());
         }
     }
 
