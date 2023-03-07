@@ -4,7 +4,7 @@
 		<title>Gaming</title>
 	</head>
 	<body>
-		<outline text="Realwire" type="rss" xmlUrl="https://www.realwire.com/rss/?id=467&row=&view=Synopsis"/>
+		<outline text="Realwire" type="rss" xmlUrl="https://www.realwire.com/rss/?id=467&amp;row=&amp;view=Synopsis"/>
 		<outline text="Gamespot" type="rss" xmlUrl="https://www.gamespot.com/feeds/mashup/"/>
 		<outline text="Nintendo Life" type="rss" xmlUrl="http://www.nintendolife.com/feeds/latest"/>
 		<outline text="Indiegames.com" type="rss" xmlUrl="http://www.indiegames.com/atom.xml"/>
