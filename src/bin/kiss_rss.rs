@@ -151,7 +151,7 @@ fn get_items(state: tauri::State<LockedSourceList>) -> String {
         html += "<div class=\"news_item\">";
         html += &format!("<div class=\"source_name\">{}</div>", item.source());
         html += &format!("<div class=\"timestamp\">{}</div>", item.timestamp());
-        html += &format!("<div class=\"title\" onclick=openPage(\"{}\")>{}</div>", item.url(), item.title());
+        html += &format!("<div class=\"title\"><a href=\"{}\" target=\"_blank\">{}</a></div>", item.url(), item.title());
         html += &format!("<div class=\"summary\">{}</div>", get_short_summary(&item.summary(), 100));
         html += "</div>";
     }
@@ -170,7 +170,7 @@ fn load_known_sources(handle: tauri::AppHandle) -> String {
         if path.is_ok() {
             let path = path.unwrap().path();
             if path.is_file() {
-                println!("file {}", path.as_path().display());
+                //println!("file {}", path.as_path().display());
                 let mut opt_gp = "".to_string();
                 let mut source_list = SourceList::new();
                 if source_list.load(path).is_ok() {

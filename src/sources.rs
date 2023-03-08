@@ -1,3 +1,4 @@
+
 use std::{io::Read, path::PathBuf};
 use std::fs::OpenOptions;
 use std::fmt;
@@ -100,9 +101,7 @@ impl Source {
     }
 
     fn download(&self) -> Result<String, Box<(dyn std::error::Error)>> {
-        let mut res = reqwest::get(&self.url)?;
-        let mut body = String::new();
-        res.read_to_string(&mut body)?;
+        let body = reqwest::blocking::get(&self.url)?.text()?;
         Ok(body)
     } 
 
@@ -295,9 +294,12 @@ impl SourceList {
     }
 
     pub fn sync_all(&mut self) {
+        //let mut futures = Vec::new();
         for source in &mut self.sources {
             source.sync();
+            ////futures.push(source.sync());
         }
+        //futures::executor::block_on(futures);
     }
 
     pub fn sync(&mut self, url: &str)  {
