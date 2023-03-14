@@ -151,7 +151,7 @@ fn get_items(state: tauri::State<LockedSourceList>) -> String {
         html += "<div class=\"news_item\">";
         html += &format!("<div class=\"source_name\">{}</div>", item.source());
         html += &format!("<div class=\"timestamp\">{}</div>", item.timestamp());
-        html += &format!("<div class=\"title\"><a href=\"{}\" target=\"_blank\">{}</a></div>", item.url(), item.title());
+        html += &format!("<div class=\"title\">{} <a href=\"{}\" target=\"_blank\">⬀</a></div>", item.title(), item.url());
         html += &format!("<div class=\"summary\">{}</div>", get_short_summary(&item.summary(), 100));
         html += "</div>";
     }
