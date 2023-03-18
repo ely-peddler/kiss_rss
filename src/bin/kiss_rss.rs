@@ -42,9 +42,9 @@ fn get_short_summary(html_summary: &str, len: usize) -> String {
 // #[tauri::command]
 // fn refresh_feeds(state: tauri::State<LockedSourceList>) -> String {
 //     let mut mutex_gd = state.0.lock().unwrap();
-//     let source_set = mutex_gd.as_mut().unwrap();
+//     let source_list = mutex_gd.as_mut().unwrap();
 //     let latest_count = 40;
-//     let item_list = source_set.sync();
+//     let item_list = source_list.sync();
 //     let mut html = get_feed_html("all", &item_list);
 //     let mut latest = item_list.clone();
 //     latest.truncate(latest_count);
@@ -55,7 +55,7 @@ fn get_short_summary(html_summary: &str, len: usize) -> String {
 // #[tauri::command]
 // fn get_sources_html(state: tauri::State<LockedSourceList>) -> String {
 //     let mutex_gd = state.0.lock().unwrap();
-//     let source_set = mutex_gd.as_ref().unwrap();
+//     let source_list = mutex_gd.as_ref().unwrap();
 //     let mut html = String::new();
 //     html += "<div class=\"source header\">";
 //     html += "<div class=\"name\">Name</div>";
@@ -63,7 +63,7 @@ fn get_short_summary(html_summary: &str, len: usize) -> String {
 //     html += "<div class=\"update_rate\">Updates</div>";
 //     html += "<div class=\"status\">OK</div>";
 //     html += "</div>";
-//     for source in source_set {
+//     for source in source_list {
 //         html += "<div class=\"source\">";
 //         html += &format!("<div class=\"name\">{}</div>", source.name);
 //         html += &format!("<div class=\"timestamp\">{}</div>", source.last_sync);
@@ -79,8 +79,8 @@ fn get_short_summary(html_summary: &str, len: usize) -> String {
 #[tauri::command]
 fn load_user_sources(state: tauri::State<LockedSourceList>) -> bool {
     let mut mutex_gd = state.0.lock().unwrap();
-    let source_set = mutex_gd.as_mut().unwrap();
-    match source_set.load_from_user_file() {
+    let source_list = mutex_gd.as_mut().unwrap();
+    match source_list.load_from_user_file() {
         Ok(()) => true,
         Err(e) => {
             println!("Problem loading the sources: {}",e);
@@ -92,9 +92,9 @@ fn load_user_sources(state: tauri::State<LockedSourceList>) -> bool {
 #[tauri::command]
 fn add_source(state: tauri::State<LockedSourceList>, url: String) {
     let mut mutex_gd = state.0.lock().unwrap();
-    let source_set = mutex_gd.as_mut().unwrap();
-    source_set.add_from_url(&url);
-    source_set.save().unwrap_or_else(|error| {
+    let source_list = mutex_gd.as_mut().unwrap();
+    source_list.add_from_url(&url);
+    source_list.save().unwrap_or_else(|error| {
         println!("Problem saving the sources: {:?}", error);
     });
 }
@@ -102,21 +102,21 @@ fn add_source(state: tauri::State<LockedSourceList>, url: String) {
 #[tauri::command]
 fn sync_source(state: tauri::State<LockedSourceList>, url: String) {
     let mut mutex_gd = state.0.lock().unwrap();
-    let source_set = mutex_gd.as_mut().unwrap();
-    source_set.sync(&url);
+    let source_list = mutex_gd.as_mut().unwrap();
+    source_list.sync(&url);
 }
 
 #[tauri::command]
 fn sync_all_sources(state: tauri::State<LockedSourceList>) {
     let mut mutex_gd = state.0.lock().unwrap();
-    let source_set = mutex_gd.as_mut().unwrap();
-    source_set.sync_all();
+    let source_list = mutex_gd.as_mut().unwrap();
+    source_list.sync_all();
 }
 
 #[tauri::command]
 fn get_sources_table(state: tauri::State<LockedSourceList>) -> String {
     let mutex_gd = state.0.lock().unwrap();
-    let source_set = mutex_gd.as_ref().unwrap();
+    let source_list = mutex_gd.as_ref().unwrap();
     let mut html = String::new();
     // html += "<div class=\"source\">";
     // html += "<div class=\"name\">Name</div>";
@@ -124,7 +124,7 @@ fn get_sources_table(state: tauri::State<LockedSourceList>) -> String {
     // html += "<div class=\"update_rate\">Updates</div>";
     // html += "<div class=\"status\">OK</div>";
     // html += "</div>";
-    for source in source_set {
+    for source in source_list {
         html += "<div class=\"source\">";
         html += "<div class=\"info\">";
         html += &format!("<div class=\"name\">{}</div>", source.name());
@@ -144,8 +144,8 @@ fn get_sources_table(state: tauri::State<LockedSourceList>) -> String {
 #[tauri::command]
 fn get_items(state: tauri::State<LockedSourceList>) -> String {
     let mutex_gd = state.0.lock().unwrap();
-    let source_set = mutex_gd.as_ref().unwrap();
-    let item_list = source_set.get_items();
+    let source_list = mutex_gd.as_ref().unwrap();
+    let item_list = source_list.get_items();
     let mut html = String::new();
     for item in &item_list {
         html += "<div class=\"news_item\">";
