@@ -49,13 +49,24 @@ async function sync_all_sources() {
   await update_items();
 }
 
-function create_div(class_name, text='') {
+function create_div(class_name, text='', id='') {
   let div = document.createElement('div');
   div.className = class_name;
   if(text.length > 0) {
     div.innerText = text;
   }
+  if(id.length > 0) {
+    div.id = id;
+  }
   return div;
+}
+
+function create_button(class_name, text, onclick) {
+  let button = document.createElement('button');
+  button.className = class_name;
+  button.innerText = text;
+  button.addEventListener('click', onclick);
+  return button;
 }
 
 async function update_sources() {
@@ -68,7 +79,7 @@ async function update_sources() {
     let source = source_list.sources[i];
     let source_element = create_div('source');
     let source_info_element = create_div('info');
-    source_info_element.appendChild(create_div('name', source.name));
+    source_info_element.appendChild(create_div('name', source.name, source.url));
     source_info_element.appendChild(create_div('timestamp', source.last_sync));
     source_info_element.appendChild(create_div('update_rate', Math.floor(source.update_rate*24.0).toString() + ' / day'));
     console.log(source.name, source.status, source.update_rate, Math.floor(source.update_rate*24.0).toString());
@@ -79,10 +90,8 @@ async function update_sources() {
       status = '?';
     }
     source_info_element.appendChild(create_div('icon', status));
-    source_info_element.appendChild(create_div('icon', '🖉'));
-    let del = create_div('icon', '🗑')
-    del.addEventListener("click", () => remove_source(source.name, source.url))
-    source_info_element.appendChild(del);
+    source_info_element.appendChild(create_button('icon', '🖉', () => rename_source(source.url)));
+    source_info_element.appendChild(create_button('icon', '🗑', () => remove_source(source.name, source.url)));
     source_element.appendChild(source_info_element);
     sources_element.appendChild(source_element);
   }

@@ -354,6 +354,8 @@ button {
 .source .icon {
   width: 5ch;
   text-align: center;
+  padding: 0;
+  font-size: inherit;
 }
 
 .source .url {
