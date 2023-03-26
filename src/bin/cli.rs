@@ -1,4 +1,4 @@
-use kiss_rss::sources::{SourceList, Status};
+use kiss_rss::sources::{SourceList};
 
 fn main() {
     let mut sources = SourceList::new();
