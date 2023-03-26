@@ -5,3 +5,4 @@ extern crate chrono; // 0.4.23
 
 pub mod news;
 pub mod sources;
+pub mod serde;

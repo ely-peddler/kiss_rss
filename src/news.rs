@@ -1,8 +1,13 @@
-#[derive(Ord, PartialOrd, Clone)]
+use serde::Serialize;
+
+use crate::serde::serialize_dt;
+
+#[derive(Ord, PartialOrd, Clone, Serialize)]
 pub struct NewsItem {
     source: String,
     title : String,
     url: String,
+    #[serde(serialize_with = "serialize_dt")]
     timestamp: chrono::DateTime<chrono::Utc>,
     summary: String
 }
@@ -33,7 +38,7 @@ impl PartialEq for NewsItem {
 }
 impl Eq for NewsItem {}
 
-#[derive(Clone)]
+#[derive(Clone, Serialize)]
 pub struct NewsItemList {
     items: Vec<NewsItem>
 }

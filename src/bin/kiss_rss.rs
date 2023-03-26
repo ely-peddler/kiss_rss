@@ -9,6 +9,7 @@ use std::sync::Mutex;
 use kiss_rss::sources::SourceList;
 use scraper::{ Html, Node::Text };
 
+#[tauri::command]
 fn get_short_summary(html_summary: &str, len: usize) -> String {
     let mut summary = String::new();
     let fragment = Html::parse_fragment(html_summary);
@@ -100,6 +101,17 @@ fn add_source(state: tauri::State<LockedSourceList>, url: String) {
 }
 
 #[tauri::command]
+fn remove_source(state: tauri::State<LockedSourceList>, url: String) {
+    let mut mutex_gd = state.0.lock().unwrap();
+    let source_list = mutex_gd.as_mut().unwrap();
+    source_list.remove_by_url(&url);
+    source_list.save().unwrap_or_else(|error| {
+        println!("Problem saving the sources: {:?}", error);
+    });
+}
+
+
+#[tauri::command]
 fn sync_source(state: tauri::State<LockedSourceList>, url: String) {
     let mut mutex_gd = state.0.lock().unwrap();
     let source_list = mutex_gd.as_mut().unwrap();
@@ -114,48 +126,50 @@ fn sync_all_sources(state: tauri::State<LockedSourceList>) {
 }
 
 #[tauri::command]
-fn get_sources_table(state: tauri::State<LockedSourceList>) -> String {
+fn get_source_list_as_json(state: tauri::State<LockedSourceList>) -> String {
     let mutex_gd = state.0.lock().unwrap();
     let source_list = mutex_gd.as_ref().unwrap();
-    let mut html = String::new();
-    // html += "<div class=\"source\">";
-    // html += "<div class=\"name\">Name</div>";
-    // html += "<div class=\"timestamp\">Last Sync</div>";
-    // html += "<div class=\"update_rate\">Updates</div>";
-    // html += "<div class=\"status\">OK</div>";
+    serde_json::to_string(&source_list).expect("to json failed")
+    // let mut html = String::new();
+    // // html += "<div class=\"source\">";
+    // // html += "<div class=\"name\">Name</div>";
+    // // html += "<div class=\"timestamp\">Last Sync</div>";
+    // // html += "<div class=\"update_rate\">Updates</div>";
+    // // html += "<div class=\"status\">OK</div>";
+    // // html += "</div>";
+    // for source in source_list {
+    //     html += "<div class=\"source\">";
+    //     html += "<div class=\"info\">";
+    //     html += &format!("<div class=\"name\">{}</div>", source.name());
+    //     html += &format!("<div class=\"timestamp\">{}</div>", source.last_sync());
+    //     html += &format!("<div class=\"update_rate\">{:.0} / day</div>", source.update_rate()*24.0);
+    //     html += &format!("<div class=\"icon\">{}</div>", source.status());
+    //     html += &format!("<div class=\"icon\" onclick=\"edit_source('{}')\">🖉</div>", source.url());
+    //     html += &format!("<div class=\"icon\" onclick=\"remove_source('{}','{}')\">🗑</div>",source.name(), source.url());
+    //     html += "</div>";
+    //     // html += &format!("<div class=\"url\">{}</div>", source.url);
+    //     html += "</div>";
+    // }
     // html += "</div>";
-    for source in source_list {
-        html += "<div class=\"source\">";
-        html += "<div class=\"info\">";
-        html += &format!("<div class=\"name\">{}</div>", source.name());
-        html += &format!("<div class=\"timestamp\">{}</div>", source.last_sync());
-        html += &format!("<div class=\"update_rate\">{:.0} / day</div>", source.update_rate()*24.0);
-        html += &format!("<div class=\"icon\">{}</div>", source.status());
-        html += &format!("<div class=\"icon\" onclick=\"edit_source('{}')\">🖉</div>", source.url());
-        html += &format!("<div class=\"icon\" onclick=\"delete_source('{}')\">🗑</div>", source.url());
-        html += "</div>";
-        // html += &format!("<div class=\"url\">{}</div>", source.url);
-        html += "</div>";
-    }
-    html += "</div>";
-    html
+    // html
 }
 
 #[tauri::command]
-fn get_items(state: tauri::State<LockedSourceList>) -> String {
+fn get_item_list_as_json(state: tauri::State<LockedSourceList>) -> String {
     let mutex_gd = state.0.lock().unwrap();
     let source_list = mutex_gd.as_ref().unwrap();
     let item_list = source_list.get_items();
-    let mut html = String::new();
-    for item in &item_list {
-        html += "<div class=\"news_item\">";
-        html += &format!("<div class=\"source_name\">{}</div>", item.source());
-        html += &format!("<div class=\"timestamp\">{}</div>", item.timestamp());
-        html += &format!("<div class=\"title\">{} <a href=\"{}\" target=\"_blank\">⬀</a></div>", item.title(), item.url());
-        html += &format!("<div class=\"summary\">{}</div>", get_short_summary(&item.summary(), 100));
-        html += "</div>";
-    }
-    html
+    serde_json::to_string(&item_list).expect("to json failed")
+    // let mut html = String::new();
+    // for item in &item_list {
+    //     html += "<div class=\"news_item\">";
+    //     html += &format!("<div class=\"source_name\">{}</div>", item.source());
+    //     html += &format!("<div class=\"timestamp\">{}</div>", item.timestamp());
+    //     html += &format!("<div class=\"title\">{} <a href=\"{}\" target=\"_blank\">⬀</a></div>", item.title(), item.url());
+    //     html += &format!("<div class=\"summary\">{}</div>", get_short_summary(&item.summary(), 100));
+    //     html += "</div>";
+    // }
+    // html
 }
 
 #[tauri::command]
@@ -198,11 +212,13 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             load_user_sources, 
             load_known_sources,
+            remove_source,
             add_source,
             sync_source, 
             sync_all_sources,
-            get_sources_table,
-            get_items
+            get_source_list_as_json,
+            get_item_list_as_json,
+            get_short_summary
             ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

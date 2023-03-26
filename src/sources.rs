@@ -2,13 +2,14 @@
 use std::{io::Read, path::PathBuf};
 use std::fs::OpenOptions;
 use std::fmt;
-
+use serde::Serialize;
 use chrono::{SubsecRound};
 use xml_builder::{XMLBuilder, XMLElement, XMLVersion};
 
 use crate::news::{ NewsItem, NewsItemList };
+use crate::serde::serialize_dt;
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Serialize)]
 pub enum Status {
     #[default]
     Unknown,
@@ -39,14 +40,16 @@ impl fmt::Display for Status {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Serialize)]
 pub struct Source {
     name : String,
     url: String,
     format: String,
     status: Status,
+    #[serde(serialize_with = "serialize_dt")]
     last_sync: chrono::DateTime<chrono::Utc>,
     update_rate: f32,
+    #[serde(skip_serializing)]
     item_list: NewsItemList,
     max_days: i64
 }
@@ -186,7 +189,7 @@ impl Source {
 }
 
 
-#[derive(Clone)]
+#[derive(Clone, Serialize)]
 pub struct SourceList {
     name: String,
     sources: Vec<Source>,
@@ -293,6 +296,12 @@ impl SourceList {
         }
     }
 
+    pub fn remove_by_url(&mut self, url: &str) {
+        if let Some(index) = self.sources.iter().position(|x| x.url == url) {
+            self.sources.remove(index);
+        }
+    }
+    
     pub fn sync_all(&mut self) {
         //let mut futures = Vec::new();
         for source in &mut self.sources {
