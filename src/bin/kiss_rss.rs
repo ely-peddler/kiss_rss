@@ -24,7 +24,7 @@ fn get_readable(url: &str) -> String {
     let mut r = Readability::new();
     r.clean_conditionally(false);
     let (actual_tree, _actual_meta) = r.base_url(Url::parse(url).unwrap()).parse(&html);
-    actual_tree.totring()
+    actual_tree.to_string()
 }
 
 
