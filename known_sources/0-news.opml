@@ -11,6 +11,7 @@
 		<outline text="Sky News" type="rss" xmlUrl="https://feeds.skynews.com/feeds/rss/home.xml" />
 		<outline text="The Guardian" type="rss" xmlUrl="https://www.theguardian.com/uk/rss" />
 		<outline text="The Independent UK" type="rss" xmlUrl="https://www.independent.co.uk/news/uk/rss" />
+		<outline text="The Telegraph" type="rss" xmlUrl="https://www.telegraph.co.uk/rss.xml" />
 		<outline text="Wallstreet Journal" type="rss" xmlUrl="https://feeds.a.dj.com/rss/RSSWorldNews.xml"/>
 		<outline text="Fox News Science" type="rss" xmlUrl="http://feeds.foxnews.com/foxnews/scitech"/>
 		<outline text="CNN &#8211; Top Stories" type="rss" xmlUrl="http://rss.cnn.com/rss/cnn_topstories.rss"/>
