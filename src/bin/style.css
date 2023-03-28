@@ -115,6 +115,11 @@
 
 }
 
+a {
+  text-decoration: none;
+  color:inherit;
+}
+
 button {
   border: 0;
   font-size: 20px;
@@ -262,7 +267,7 @@ button {
 .tab .content {
   flex: 1;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: auto;
   /* 
   display: flex;
   position: absolute;
@@ -286,9 +291,14 @@ button {
   min-height: min-content;
 }
 
+.title {
+  font-size: larger;
+}
+
 .news_item {
   min-height: fit-content;
   padding-top: 2px;
+  padding-bottom: 5px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -309,12 +319,7 @@ button {
 .news_item .title {
   text-align: left;
   width: 100%;
-  padding-bottom: 4px;
-}
-
-.news_item .title a {
-  text-decoration: none;
-  color:inherit;
+  padding: 0 0 4px 0;
 }
 
 .news_item .summary {

@@ -1,5 +1,11 @@
 const { invoke } = window.__TAURI__.tauri;
 
+async function display_readable(title, url) {
+  document.getElementById("reader_title").innerHTML = title;
+  document.getElementById("reader").innerHTML = await invoke("get_readable", { url: url});
+  toggle_tab("reader");
+}
+
 async function load_known_sources() {
   document.getElementById("known_source").innerHTML = await invoke("load_known_sources");
 }
@@ -108,7 +114,19 @@ async function update_items() {
     let item_element = create_div('news_item');
     item_element.appendChild(create_div('source_name', item.source));
     item_element.appendChild(create_div('timestamp', item.timestamp));
-    item_element.appendChild(create_div('title', item.title));
+    // let encoded_url = encodeURIComponent(item.url);
+    // let item_url = new URL(item.url);
+    // console.log(encoded_url);
+    // let reader_url = "read:"+item.url // "read://"+item_url.protocol.replace(":", "")+"_"+item_url.host+"/?url="+encoded_url;
+    // console.log(reader_url);
+    // let a = document.createElement("a")
+    // a.href=reader_url
+    // a.innerText=item.title
+    // a.target="_blank"
+    // let t = create_div('title');
+    // t.appendChild(a)
+    // item_element.appendChild(t);
+    item_element.appendChild(create_button('title', item.title, () => display_readable(item.title, item.url)));
     item_element.appendChild(create_div('summary', await invoke("get_short_summary", { htmlSummary: item.summary, len: 100 })));
     items_element.appendChild(item_element);
   }
@@ -161,6 +179,9 @@ function toggle_tab(name) {
   clear_selected(document.getElementsByClassName("tab_toggle"));
   document.getElementById(name+"_tab").className += " selected";
   document.getElementById(name+"_toggle").className += " selected";
+  if(name != "reader") {
+    document.getElementById("reader").innerHTML = "";
+  }
 }
 
 window.addEventListener("DOMContentLoaded", () => {

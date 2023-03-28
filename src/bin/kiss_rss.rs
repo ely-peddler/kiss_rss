@@ -9,6 +9,25 @@ use std::sync::Mutex;
 use kiss_rss::sources::SourceList;
 use scraper::{ Html, Node::Text };
 
+use readable_readability::Readability;
+use url::Url;
+
+#[tauri::command]
+fn get_readable(url: &str) -> String {
+    let html = match reqwest::blocking::get(url) {
+        Ok(resp) => match resp.text() {
+            Ok(html) => html.to_string(),
+            Err(_) => String::new()
+        },
+        Err(_) => String::new()
+    };
+    let mut r = Readability::new();
+    r.clean_conditionally(false);
+    let (actual_tree, _actual_meta) = r.base_url(Url::parse(url).unwrap()).parse(&html);
+    actual_tree.totring()
+}
+
+
 #[tauri::command]
 fn get_short_summary(html_summary: &str, len: usize) -> String {
     let mut summary = String::new();
@@ -218,7 +237,8 @@ fn main() {
             sync_all_sources,
             get_source_list_as_json,
             get_item_list_as_json,
-            get_short_summary
+            get_short_summary,
+            get_readable
             ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -22,6 +22,10 @@
       },
       "fs": {
         "scope": ["$RESOURCE/*"]
+      },
+      "http": {
+        "all": true,
+        "scope": ["read:*"]
       }
     },
     "bundle": {
