@@ -1,16 +1,42 @@
-use kiss_rss::sources::{SourceList};
+
+extern crate readability;
+use readability::extractor;
+use readable_readability::{Metadata, Readability};
+use url::Url;
 
 fn main() {
-    let mut sources = SourceList::new();
-    sources.load_from_user_file().expect("Unable to load_from_user_file sources."); 
-    sources.sync_all();
-    let j = serde_json::to_string(&sources).expect("to json failed");
-    println!("{}", j);
-    // let _item_list = sources.get_items();
-    // for source in &sources {
-    //     if !matches!(source.status(), Status::Ok) || source.update_rate() == 0.0 {
-    //         println!("{} {}\t{}\t{}\t{}\t{}\t{}", source.status(), source.status().get_message(), source.format(), source.last_sync(), source.update_rate(), source.name(), source.url());
-    //     }
-    // }
+    let urls = [
+        "https://www.elmundo.es/internacional/2023/03/28/6422bee8fc6c83b81d8b45aa.html"
+        // "https://elpais.com/sociedad/2023-03-28/el-consejo-de-ministros-aprueba-la-ley-de-familias-sin-la-prohibicion-expresa-del-veto-parental.html"
+        // "http://www.bbc.co.uk/news/uk-politics-33647154",
+        // "https://www.bbc.co.uk/news/uk-scotland-scotland-politics-65105951"
+        //"https://www.theguardian.com/global-development/2023/mar/28/security-guards-in-qatar-still-being-paid-as-little-as-35p-an-hour"
+        ];
+    for url in urls {
+        match extractor::scrape(url) {
+            Ok(product) => {
+                println!("------- html ------");
+                println!("{}", product.content);
+                println!("---- plain text ---");
+                println!("{}", product.text);
+            }
+            Err(_) => println!("error occured"),
+        }
+        let html = match reqwest::blocking::get(url) {
+            Ok(resp) => match resp.text() {
+                Ok(html) => html.to_string(),
+                Err(_) => String::new()
+            },
+            Err(_) => String::new()
+        };
+        println!("{}", html.len());
+        let mut r = Readability::new();
+        let (actual_tree, actual_meta) = r.base_url(Url::parse(url).unwrap()).parse(&html);
+        println!("{}", actual_tree.text_contents());
+        println!("{}", actual_meta.article_title.unwrap_or_default());
+        println!("{}", actual_meta.page_title.unwrap_or_default());
+        println!("{}", actual_meta.description.unwrap_or_default());
 
+    }
 }
+
