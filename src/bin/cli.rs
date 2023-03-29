@@ -1,7 +1,4 @@
-
-extern crate readability;
-use readability::extractor;
-use readable_readability::{Metadata, Readability};
+use readable_readability::Readability;
 use url::Url;
 
 fn main() {
@@ -13,15 +10,6 @@ fn main() {
         //"https://www.theguardian.com/global-development/2023/mar/28/security-guards-in-qatar-still-being-paid-as-little-as-35p-an-hour"
         ];
     for url in urls {
-        match extractor::scrape(url) {
-            Ok(product) => {
-                println!("------- html ------");
-                println!("{}", product.content);
-                println!("---- plain text ---");
-                println!("{}", product.text);
-            }
-            Err(_) => println!("error occured"),
-        }
         let html = match reqwest::blocking::get(url) {
             Ok(resp) => match resp.text() {
                 Ok(html) => html.to_string(),
