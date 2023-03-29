@@ -1,1 +1,3 @@
 cargo build --bin kiss_rss -r --features="custom-protocol build-tauri"
+
+cargo tauri build -b msi
